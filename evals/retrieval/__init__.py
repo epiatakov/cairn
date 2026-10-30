@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Protocol
 
 from cairn import Brain, Entry, Index
+from cairn.recall import DEFAULT_MIN_SCORE
 from cairn.search import STOPWORDS
 
 from .. import EVAL_BRAIN, EVALS_DIR, RESULTS_DIR
@@ -178,13 +179,34 @@ def run(brain_dir: Path = EVAL_BRAIN, queries_file: Path = QUERIES_FILE) -> dict
     brain = Brain.open(brain_dir)
     queries = load_queries(queries_file)
     counts = {kind: sum(q.kind == kind for q in queries) for kind in KINDS}
-    return {
+    results = {
         "version": 1,
         "entries": sum(e.status != "archived" for e in brain.entries),
         "queries": counts,
         "limit": LIMIT,
         "keep": KEEP,
         "retrievers": {r.name: evaluate(r, queries) for r in retrievers(brain)},
+    }
+    results["recall_floor"] = recall_floor(results["retrievers"][GATED])
+    return results
+
+
+def recall_floor(cairn: dict, min_score: float = DEFAULT_MIN_SCORE) -> dict:
+    """How cairn's shipped recall hook floor (``cairn.recall``) does on this set.
+
+    ``kept`` is the share of answerable queries whose correct top-1 hit clears the floor;
+    ``none_fp`` the share of no-answer queries whose top hit clears it.
+    """
+    answerable = [p for p in cairn["per_query"] if p["kind"] != "none"]
+    unanswerable = [p for p in cairn["per_query"] if p["kind"] == "none"]
+    return {
+        "min_score": min_score,
+        "kept": round(
+            mean([float(p["rank"] == 1 and p["top"][0][1] >= min_score) for p in answerable]), 4
+        ),
+        "none_fp": round(
+            mean([float(bool(p["top"]) and p["top"][0][1] >= min_score) for p in unanswerable]), 4
+        ),
     }
 
 
@@ -232,4 +254,12 @@ def render_markdown(results: dict, queries: Sequence[Query]) -> str:
             f"- {p['id']}: `{text[p['id']]}` -> {p['top'][0][0]} ({p['top'][0][1]:.2f})"
             for p in fps
         ] or ["- none"]
+    floor = results.get("recall_floor")
+    if floor:
+        rows += [
+            "",
+            f"At the recall hook's floor (min_score {floor['min_score']}), {GATED} keeps "
+            f"{pct(floor['kept'])} of answerable queries as a correct top-1 hit and lets "
+            f"{pct(floor['none_fp'])} of no-answer queries through.",
+        ]
     return "\n".join(rows) + "\n"

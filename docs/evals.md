@@ -73,6 +73,8 @@ On the 10 no-answer queries:
   not comparable across retrievers, so each gets its own operating point: the lowest score
   that still keeps 90% of its correct top-1 hits on answerable queries. The no-answer queries
   never influence the threshold.
+- **recall floor** (cairn only): the same two shares at the recall hook's fixed
+  `min_score`, so the shipped default is measured, not assumed.
 
 ### Results
 
@@ -106,8 +108,11 @@ hit@3 by query kind:
   for 7 of 10 unanswerable queries. At the calibrated threshold cairn still lets 2 through
   (`rust borrow checker: cannot borrow as mutable` reaches the mutable-defaults fact via
   `mutable`, `configure vim to indent with spaces` reaches the Makefile tabs issue);
-  substring lets 1 through. A recall hook that injects every hit would add noise to most
-  prompts, so the hook needs a score floor.
+  substring lets 1 through. The shipped recall hook (`cairn recall`) uses a fixed floor of
+  `min_score = 1.5`. On this set that floor keeps every correct top-1 hit (95% of answerable
+  queries) but lets **5 of 10** no-answer queries through, against 2 of 10 at the calibrated
+  threshold (2.70). Raising the floor is worth testing; the trade-off shows in
+  `recall_floor` in `evals/results/retrieval.json`.
 - **`[[links]]` leak terms into the linking entry.** `rotate a leaked secret` ranks the
   `.gitignore` issue first because its body links `[[rotate-a-leaked-secret]]` and the link
   id is tokenized as body text. Excluding link ids from the body field is a cheap fix to
@@ -168,9 +173,10 @@ to fail and the reference to pass, so a checker cannot silently accept everythin
 
 For each task and repeat the harness runs two arms in fresh repositories:
 
-- **`brain`**: the top 3 hits of `cairn search` for the task prompt are prepended to the
-  prompt, as titles and bodies. This is what the planned recall hook will do, so a retrieval
-  miss is a miss here too.
+- **`brain`**: the hits of `cairn.recall.recall` for the task prompt (the recall hook's
+  selection: top 3, score floor 1.5) are prepended to the prompt. Unlike the hook, which
+  injects pointers (id, title, snippet, path), the harness inlines the full bodies, because
+  the brain is not inside the throwaway repository. A retrieval miss is a miss here too.
 - **`none`**: the bare prompt.
 
 Runners:

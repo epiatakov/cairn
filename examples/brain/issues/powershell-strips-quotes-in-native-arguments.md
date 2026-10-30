@@ -6,6 +6,12 @@ tags: [powershell, windows, shell, json]
 status: active
 created: 2026-02-21
 updated: 2026-02-21
+tool: powershell
+state: workaround
+occurrences: 2
+first_seen: 2026-02-21
+last_seen: 2026-06-02
+workaround: Pass JSON through a file or stdin, or escape inner quotes as \" on PowerShell 5.1.
 ---
 
 **Symptom:** `tool --data '{"name": "x"}'` works in bash, but from Windows PowerShell 5.1

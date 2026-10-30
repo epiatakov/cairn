@@ -6,6 +6,13 @@ tags: [shell, bash, line-endings, docker]
 status: active
 created: 2026-01-12
 updated: 2026-01-12
+tool: bash
+fingerprint: [794c0a7b2a30, 856636e910ef]
+state: workaround
+occurrences: 6
+first_seen: 2026-01-12
+last_seen: 2026-10-21
+workaround: Add "*.sh text eol=lf" to .gitattributes and renormalize; for one file, run dos2unix or sed -i 's/\r$//'.
 ---
 
 **Symptom:** running a script in Linux or a container fails with

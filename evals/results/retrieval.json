@@ -2666,5 +2666,10 @@
         }
       ]
     }
+  },
+  "recall_floor": {
+    "min_score": 1.5,
+    "kept": 0.95,
+    "none_fp": 0.5
   }
 }

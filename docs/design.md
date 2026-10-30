@@ -1,8 +1,9 @@
 # Design
 
-This document covers the v0.1 core: the data model, retrieval, deduplication and linting.
-Planned pieces (adapters, hooks, hot-issues board, eval harness) are described only where they
-shape today's decisions.
+This document covers the core (data model, retrieval, deduplication and linting).
+It also covers the tool adapters and the recall hook. The hot-issues board has its own
+document, [hot-issues.md](hot-issues.md). Planned pieces (capture hook, eval harness) are
+described only where they shape today's decisions.
 
 ## Data model
 
@@ -25,8 +26,8 @@ Unknown keys are preserved, so adapters can attach their own metadata without sc
 - `fact`: a durable truth about a tool, system or codebase.
 - `skill`: a procedure. It lives at `skills/<id>/SKILL.md`, following the public skills-folder
   pattern, so scripts or references can sit next to it and adapters can export the folder whole.
-- `issue`: a known failure with symptom, cause and workaround. This is the raw material for the
-  hot-issues board.
+- `issue`: a known failure with symptom, cause and workaround. Optional extra fields
+  (`fingerprint`, `occurrences`, `state`, ...) put it on the hot-issues board.
 - `note`: anything else worth keeping.
 
 **Status** replaces deletion. `stale` entries still show up in search, flagged, because old
@@ -96,20 +97,61 @@ missed duplicate, which lint and review can still catch.
 | error | `duplicate-id` | Two files share an id |
 | error | `broken-link` | `links:` or a body `[[id]]` points to an unknown id |
 | error | `wrong-folder` | The `type` does not match the folder the file is in |
+| error | `invalid-issue` | A hot-issues field (`fingerprint`, `state`, `occurrences`, dates) is invalid |
 | warning | `id-mismatch` | The id differs from the file name (or skill folder name) |
 | warning | `near-duplicate` | Two live entries are above the similarity threshold |
+| warning | `duplicate-fingerprint` | Two live issues share an error fingerprint |
 
 `[[...]]` inside code spans and fenced blocks is ignored, so a shell test such as
 `[[ -f x ]]` is never treated as a link.
 
 ## Machine interface
 
-`--json` output on `search`, `show` and `list` is a contract for hooks and adapters. Every
-payload carries `"version": 1`. Fields may be added, but changing or removing one requires a
+`--json` output on `search`, `show`, `list` and the `issue` commands, and
+`recall --format json`, is a contract for hooks and adapters. Every payload carries
+`"version": 1`. Fields may be added, but changing or removing one requires a
 version bump. Paths are relative to the brain and always use `/`.
 
 The same operations are importable (`cairn.Brain`, `cairn.Entry`, `cairn.search`), so adapters
 and a future MCP server don't have to shell out.
+
+## Adapters
+
+`cairn install <tool>` renders the same short instructions (recall before work, `cairn add`
+after) into each tool's native file. Every adapter returns planned changes (file before and
+after) instead of writing, so `--dry-run` prints a diff and nothing is written unless every
+step of the plan succeeded.
+
+Ownership is explicit, because these files are shared with the user:
+
+- In shared Markdown files, cairn owns only a block between `<!-- cairn:begin -->` and
+  `<!-- cairn:end -->` lines. Install replaces the block in place or appends it after a blank
+  line; uninstall removes it and that blank line, so install then uninstall returns the file
+  unchanged. A begin marker without an end is an error, never a guess.
+- In `.claude/settings.json`, cairn owns command hooks that start with `cairn recall` and use
+  `--format claude-hook`. Install updates such a hook in place (for a new brain path) or appends
+  a new group; uninstall removes only those hooks and any container they leave empty. Invalid
+  JSON or an unexpected shape stops the install with an error instead of a rewrite.
+- Whole files (the Cursor rule, exported skills) carry a "managed by cairn" marker line. A file
+  without it is the user's: install refuses to overwrite it and uninstall leaves it alone.
+
+The brain path written into these files is relative to the project when the brain lives inside
+it, so the files can be committed, and absolute otherwise.
+
+## Recall
+
+`cairn recall` is `search` tuned for injection into a prompt: at most 3 hits, each scoring at
+least 1.5, shown as id, title, best snippet line and path. On the example brain a matching
+issue scores about 4 and unrelated entries stay under about 1.3. Prompts are cut at 2,000
+characters, since pasted logs add noise faster than signal.
+
+It skips trivial prompts: fewer than two content words after stopwords, or only chit-chat words
+("thanks", "ok go ahead", "lgtm"). This follows the gate lesson below: injecting context into
+every turn trains people to ignore it.
+
+The Claude Code hook mode never fails closed. A `UserPromptSubmit` hook that exits with code 2
+blocks the prompt, so any error (missing brain, bad JSON, bad flags, a bug) produces no output
+and exit code 0. A relative `--brain` is resolved against the `cwd` in the hook payload.
 
 ## Lessons
 

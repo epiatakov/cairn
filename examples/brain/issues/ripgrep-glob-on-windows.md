@@ -7,6 +7,12 @@ status: active
 created: 2026-01-08
 updated: 2026-04-11
 links: [powershell-strips-quotes-in-native-arguments]
+tool: rg
+state: workaround
+occurrences: 3
+first_seen: 2026-01-08
+last_seen: 2026-04-11
+workaround: Use double quotes around globs in cmd.exe, e.g. rg -g "*.py" TODO, or rg --type py.
 ---
 
 **Symptom:** `rg -g '*.py' TODO` finds nothing in `cmd.exe`, even though matching files exist.

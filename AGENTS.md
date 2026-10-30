@@ -6,9 +6,9 @@ Canonical instructions for coding agents (and humans) working on this repository
 ## Project
 
 cairn is "one second brain for every coding agent": a plain-Markdown knowledge store
-(`src/cairn/`) plus a CLI, `cairn`. Adapters for Claude Code, Codex, Copilot and Cursor,
-recall/capture hooks and a hot-issues board are planned (see `ROADMAP.md`). The eval harness
-lives in `evals/` (not part of the installed package).
+(`src/cairn/`) plus a CLI, `cairn`, with adapters for Claude Code, Codex, Copilot and Cursor,
+a recall hook and a hot-issues board. A capture hook is planned (see `ROADMAP.md`). The eval
+harness lives in `evals/` (not part of the installed package).
 
 ## Stack
 
@@ -39,12 +39,18 @@ python -m evals.agent --runner mock  # agent harness self-test
 | `src/cairn/search.py` | Tokenizer and BM25F index |
 | `src/cairn/dedupe.py` | Shingle-Jaccard near-duplicate detection |
 | `src/cairn/lint.py` | Brain consistency checks |
+| `src/cairn/issues.py` | Hot-issues board: fingerprints, matching, record/resolve/prune |
+| `src/cairn/issue_cli.py` | `cairn issue ...` subcommands and the Claude Code hook mode |
+| `src/cairn/recall.py` | Recall: trivial-prompt filter, thresholded search, hook output |
+| `src/cairn/adapters/` | One module per tool (`claude`, `codex`, `copilot`, `cursor`) on `base.py` |
+| `src/cairn/agents_cli.py` | `recall`, `install`, `uninstall`, `skills` subcommands |
 | `src/cairn/cli.py` | argparse CLI; keep logic in the modules above |
 | `examples/brain/` | Example brain used by docs and tests |
 | `evals/brain/` | Eval brain; changing it changes the published numbers |
 | `evals/retrieval/` | Labeled queries, baselines and metrics (`python -m evals.retrieval`) |
 | `evals/agent/` | Agent A/B tasks, checkers and runners (`python -m evals.agent`) |
 | `docs/design.md` | Data model and design decisions |
+| `docs/hot-issues.md` | Hot-issues board: fingerprints, lifecycle, hook |
 | `docs/evals.md` | Eval method, datasets, metrics and threats to validity |
 
 ## Conventions

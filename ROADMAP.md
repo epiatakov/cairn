@@ -13,25 +13,33 @@ Each milestone is a small series of PRs. Items move to **Done** only when merged
 
 One brain, rendered into each tool's native format. Generated files are never edited by hand.
 
-- [ ] **Claude Code**: skills export to `.claude/skills/`, a `CLAUDE.md` pointer, hook wiring
-- [ ] **Codex**: an `AGENTS.md` section that points at the brain and its index
-- [ ] **GitHub Copilot**: `.github/copilot-instructions.md` generation
-- [ ] **Cursor**: project rules generation
+- [x] **Claude Code**: skills export to `.claude/skills/`, a `CLAUDE.md` pointer, hook wiring
+  (`cairn install claude`, `cairn skills export --tool claude`)
+- [x] **Codex**: an `AGENTS.md` section that points at the brain and its index
+- [x] **GitHub Copilot**: `.github/copilot-instructions.md` generation
+- [x] **Cursor**: project rules generation, plus skills as agent-requested rules
 - [ ] `cairn sync` to regenerate every adapter's output, with `--check` for CI
 
 ## Recall and capture hooks
 
-- [ ] **Recall gate**: before a task starts, search the brain with the prompt and inject the top
-  hits (built on `cairn search --json`)
+- [x] **Recall gate**: before a task starts, search the brain with the prompt and inject the top
+  hits (`cairn recall`, wired as a Claude Code `UserPromptSubmit` hook; skips trivial prompts)
+- [ ] Recall hooks for other tools, as they gain prompt hooks (today they get instructions only)
 - [ ] **Capture gate**: when a substantive task ends, require a capture or an explicit "nothing
   durable". Skip trivial turns such as pure Q&A (see "Lessons" in `docs/design.md`)
 - [ ] Capture helpers: `cairn add` from a hook payload, with near-duplicate merge suggestions
 
 ## Hot-issues board
 
-- [ ] `cairn issues`: active `issue` entries ranked by recency and hit count
-- [ ] Inject matching hot issues when a tool error appears (for example, a failing command)
-- [ ] Mark issues `stale` automatically when the workaround stops being used
+- [x] `cairn issue record|match|list|resolve|prune`: issues fingerprinted, counted and ranked by
+  a recency-weighted hot score (see `docs/hot-issues.md`)
+- [x] Error fingerprints that survive path, number, id and timestamp differences, with a BM25
+  fallback that learns new variants
+- [x] `cairn issue match --format claude-hook`: inject the matching workaround after a failed
+  tool call (silent on no match or any error)
+- [x] `cairn issue prune`: mark issues `stale` when they stop recurring
+- [ ] Record occurrences from the hook itself, so agents don't have to call `record`
+- [ ] Hook output for other agents (Codex, Copilot, Cursor) once their adapters land
 
 ## Eval harness
 
@@ -43,8 +51,8 @@ One brain, rendered into each tool's native format. Generated files are never ed
 - [ ] Real agent A/B results with Claude Code (needs an API budget)
 - [ ] Runners for Codex, Copilot and Cursor
 - [ ] A held-out query set written by someone who has not read the eval brain
-- [ ] Retrieval follow-ups the eval found: a score floor for recall, and not indexing
-  `[[link]]` ids as body text
+- [ ] Retrieval follow-ups the eval found: raise the recall floor (1.5 lets 5 of 10
+  no-answer queries through), and stop indexing `[[link]]` ids as body text
 - [ ] Published results in the README, regenerated in CI on a schedule
 
 ## Later / optional

@@ -22,6 +22,7 @@ from evals.retrieval import (
     evaluate,
     first_rank,
     load_queries,
+    recall_floor,
     run,
 )
 from evals.retrieval import render_markdown as render_retrieval
@@ -72,6 +73,17 @@ def test_evaluate_scores_a_toy_retriever():
     assert (m["hit@1"], m["hit@3"], m["mrr"]) == (0.0, 1.0, 0.5)
     assert m["none_any_result"] == 1.0
     assert m["none_fp_at_threshold"] == 0.0  # no correct top-1 hit, so the threshold is inf
+
+
+def test_recall_floor_counts_hits_at_the_hook_threshold():
+    per_query = [
+        {"kind": "exact", "rank": 1, "top": [["a", 2.0]]},
+        {"kind": "exact", "rank": 1, "top": [["a", 1.0]]},
+        {"kind": "none", "rank": None, "top": [["b", 1.6]]},
+        {"kind": "none", "rank": None, "top": []},
+    ]
+    floor = recall_floor({"per_query": per_query}, min_score=1.5)
+    assert floor == {"min_score": 1.5, "kept": 0.5, "none_fp": 0.5}
 
 
 def test_baselines_rank_sensible_entries(eval_brain):

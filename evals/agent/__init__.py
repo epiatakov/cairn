@@ -4,9 +4,9 @@ For each task and repeat, the harness builds a throwaway git repository, runs th
 twice (arm ``brain`` and arm ``none``), checks the result, and records pass/fail, whether
 the known failure was repeated, turns, tokens, cost and wall time.
 
-The ``brain`` arm gets the top hits of ``cairn search`` for the task prompt, prepended to
-the prompt. That is what the planned recall hook will do, so a retrieval miss is a miss here
-too.
+The ``brain`` arm gets the hits of ``cairn.recall.recall`` for the task prompt (the same
+selection, limit and score floor as the recall hook), prepended to the prompt with their
+bodies. A retrieval miss is a miss here too.
 """
 
 from __future__ import annotations
@@ -19,13 +19,15 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from cairn import Brain
+from cairn.recall import DEFAULT_LIMIT
+from cairn.recall import recall as cairn_recall
 
 from .. import EVAL_BRAIN
 from .runners import Runner
 from .tasks import TASKS, Task
 
 ARMS = ("brain", "none")
-RECALL_LIMIT = 3
+RECALL_LIMIT = DEFAULT_LIMIT
 SUFFIX = (
     "\n\nWork in the current directory, which is a git repository. Make the change directly; "
     "do not ask questions. Do not commit unless the task needs it."
@@ -52,7 +54,7 @@ class Record:
 
 
 def recall(brain: Brain, query: str, limit: int = RECALL_LIMIT) -> list:
-    return brain.search(query, limit=limit)
+    return cairn_recall(brain, query, limit=limit)
 
 
 def build_prompt(task: Task, hits: Sequence) -> str:

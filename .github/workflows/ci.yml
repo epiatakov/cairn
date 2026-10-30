@@ -42,6 +42,11 @@ jobs:
           top=$(cairn search "windows glob" --brain examples/brain --json --limit 1 \
             | python -c "import json, sys; print(json.load(sys.stdin)['results'][0]['id'])")
           test "$top" = "ripgrep-glob-on-windows"
+      - name: Done-check for the hot-issues board
+        run: |
+          cairn issue match --brain examples/brain --json \
+            --error 'rg: C:\proj\src\*: The filename, directory name, or volume label syntax is incorrect' \
+            | python -c "import json, sys; assert json.load(sys.stdin)['match']['id'] == 'ripgrep-wildcard-path-on-windows'"
       - name: Eval brain stays clean and indexed
         run: |
           cairn lint --strict --brain evals/brain
