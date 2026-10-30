@@ -12,3 +12,6 @@ htmlcov/
 .DS_Store
 # A personal brain created by `cairn init` in this checkout
 /brain/
+
+# Mock agent runs are a harness self-test with machine-dependent timings
+/evals/results/agent-mock.json

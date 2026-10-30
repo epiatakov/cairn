@@ -47,3 +47,13 @@ jobs:
           cairn issue match --brain examples/brain --json \
             --error 'rg: C:\proj\src\*: The filename, directory name, or volume label syntax is incorrect' \
             | python -c "import json, sys; assert json.load(sys.stdin)['match']['id'] == 'ripgrep-wildcard-path-on-windows'"
+      - name: Eval brain stays clean and indexed
+        run: |
+          cairn lint --strict --brain evals/brain
+          cairn index --check --brain evals/brain
+      - name: Retrieval eval (fails if cairn hit@3 drops below the baseline)
+        run: |
+          python -m evals.retrieval
+          git diff --exit-code evals/results/retrieval.json
+      - name: Agent harness self-test (mock runner)
+        run: python -m evals.agent --runner mock

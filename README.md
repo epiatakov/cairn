@@ -8,9 +8,9 @@ cairn is a plain-Markdown knowledge store plus the plumbing that makes coding ag
 (Claude Code, Codex, GitHub Copilot, Cursor) **recall** relevant knowledge before they work
 and **capture** durable facts after they work, all from one shared source of truth.
 
-> **Status: early.** The knowledge store, the `cairn` CLI, tool adapters, the recall hook
-> and the hot-issues board work today. The capture hook and the eval harness are planned; see
-> [ROADMAP.md](ROADMAP.md).
+> **Status: early.** The knowledge store, the `cairn` CLI, tool adapters, the recall hook,
+> the hot-issues board and the retrieval eval work today. The agent A/B harness is built but
+> has no real-agent results yet. The capture hook is planned; see [ROADMAP.md](ROADMAP.md).
 > Items below are marked _(planned)_ until they ship.
 
 ## Why another memory tool?
@@ -27,7 +27,8 @@ three things they don't combine:
    _(The recall gate is built for Claude Code, and so is the hot-issues board with its hook
    mode; the capture gate is planned.)_
 3. **Measured value.** An A/B eval harness runs the same tasks with and without the brain and
-   reports the difference, so "it helps" is a number, not a feeling. _(Planned.)_
+   reports the difference, so "it helps" is a number, not a feeling. _(Retrieval eval built,
+   with [results](#results); agent A/B harness ready, results pending.)_
 
 ## 60-second quickstart
 
@@ -189,12 +190,46 @@ the hook contract are in [docs/hot-issues.md](docs/hot-issues.md).
 - **Stable contracts.** `--json` output is versioned so hooks don't break on cosmetic changes.
 - **Clean room.** Everything is original code built on public patterns. See [CLEAN_ROOM.md](CLEAN_ROOM.md).
 
+## Results
+
+### Retrieval
+
+50 labeled queries (exact wording, paraphrases, pasted errors, vague prompts, and 10 with no
+right answer) against a 42-entry eval brain. cairn's BM25F is compared with the same BM25
+without field weights, and with grep-style substring matching. Method, dataset and caveats:
+[docs/evals.md](docs/evals.md). Reproduce with `python -m evals.retrieval`.
+
+| Retriever | hit@1 | hit@3 | MRR | No-answer: any result | No-answer: FP at threshold |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| cairn BM25F | 95% | 100% | 0.97 | 70% | 20% |
+| BM25, no field weights | 88% | 100% | 0.94 | 70% | 20% |
+| Substring match | 90% | 100% | 0.95 | 70% | 10% |
+
+What this does and does not show:
+
+- Field weighting wins at rank 1 (2 misses vs 5 and 4). hit@3 is at the ceiling for all three,
+  so the set is too easy to separate them there: one author wrote both entries and queries.
+- cairn does **not** win on unanswerable queries. Without a threshold, all three return
+  something for 7 of 10; at a calibrated threshold, substring matching has fewer false
+  positives. The recall hook's shipped floor (`min_score` 1.5) keeps every correct top-1 hit
+  but lets 5 of 10 unanswerable queries through; a calibrated floor (2.70) lets 2 through.
+- CI fails if cairn's hit@3 drops below the recorded baseline.
+
+### Agent A/B
+
+**Harness ready, results pending.** 13 scripted tasks, each built around a pitfall the brain
+knows, run with and without brain recall, with deterministic checkers for pass/fail and for
+"repeated a known failure". CI runs it with a mock agent to test the harness; real runs with
+Claude Code are one command (`evals/agent/run_claude.sh`, needs an API key) and have not
+been made yet.
+
 ## Development
 
 ```bash
 pip install -e ".[dev]"
 pytest
 ruff check . && ruff format --check .
+python -m evals.retrieval          # retrieval eval; fails on a hit@3 regression
 ```
 
 Contributor and agent conventions live in [AGENTS.md](AGENTS.md).

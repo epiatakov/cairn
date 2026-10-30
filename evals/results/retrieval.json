@@ -1,0 +1,2675 @@
+{
+  "version": 1,
+  "entries": 41,
+  "queries": {
+    "exact": 8,
+    "paraphrase": 12,
+    "error": 10,
+    "vague": 10,
+    "none": 10
+  },
+  "limit": 10,
+  "keep": 0.9,
+  "retrievers": {
+    "cairn-bm25f": {
+      "metrics": {
+        "hit@1": 0.95,
+        "hit@3": 1.0,
+        "mrr": 0.975,
+        "none_any_result": 0.7,
+        "none_fp_at_threshold": 0.2
+      },
+      "hit@3_by_kind": {
+        "exact": 1.0,
+        "paraphrase": 1.0,
+        "error": 1.0,
+        "vague": 1.0
+      },
+      "threshold": 2.7039,
+      "per_query": [
+        {
+          "id": "q01",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              14.2783
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              9.0638
+            ],
+            [
+              "bash-pipeline-exit-status",
+              4.0404
+            ]
+          ]
+        },
+        {
+          "id": "q02",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "sqlite-wal-mode-concurrency",
+              8.1579
+            ],
+            [
+              "sqlite-database-is-locked",
+              7.3668
+            ],
+            [
+              "reproduce-a-flaky-test",
+              1.179
+            ]
+          ]
+        },
+        {
+          "id": "q03",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "npm-ci-lockfile-out-of-sync",
+              12.8751
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              11.2514
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              6.0253
+            ]
+          ]
+        },
+        {
+          "id": "q04",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "python-venv-layout-differs-on-windows",
+              10.1666
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              3.6189
+            ],
+            [
+              "shell-script-bad-interpreter-crlf",
+              3.2739
+            ]
+          ]
+        },
+        {
+          "id": "q05",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "git-push-rejected-non-fast-forward",
+              12.6838
+            ],
+            [
+              "rotate-a-leaked-secret",
+              2.1298
+            ],
+            [
+              "release-a-python-package",
+              1.2651
+            ]
+          ]
+        },
+        {
+          "id": "q06",
+          "kind": "exact",
+          "rank": 2,
+          "top": [
+            [
+              "gitignore-does-not-untrack-files",
+              4.6971
+            ],
+            [
+              "rotate-a-leaked-secret",
+              4.5135
+            ],
+            [
+              "code-review-checklist",
+              1.3804
+            ]
+          ]
+        },
+        {
+          "id": "q07",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "makefile-missing-separator",
+              9.9927
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              0.9635
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.9559
+            ]
+          ]
+        },
+        {
+          "id": "q08",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "profile-a-slow-python-function",
+              8.5016
+            ],
+            [
+              "python-mutable-default-arguments",
+              3.0003
+            ],
+            [
+              "python-venv-layout-differs-on-windows",
+              0.8878
+            ]
+          ]
+        },
+        {
+          "id": "q09",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "bash-pipeline-exit-status",
+              3.4421
+            ],
+            [
+              "write-a-database-migration",
+              2.3932
+            ],
+            [
+              "docker-apt-get-update-cache",
+              1.8173
+            ]
+          ]
+        },
+        {
+          "id": "q10",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              2.3337
+            ],
+            [
+              "docker-apt-get-update-cache",
+              2.1556
+            ],
+            [
+              "python-venv-layout-differs-on-windows",
+              1.1677
+            ]
+          ]
+        },
+        {
+          "id": "q11",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "yaml-norway-problem",
+              7.657
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              2.4482
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              1.6615
+            ]
+          ]
+        },
+        {
+          "id": "q12",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "gitignore-does-not-untrack-files",
+              3.9964
+            ],
+            [
+              "sort-order-depends-on-locale",
+              2.9732
+            ],
+            [
+              "rotate-a-leaked-secret",
+              2.2523
+            ]
+          ]
+        },
+        {
+          "id": "q13",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "bisect-a-regression",
+              2.7039
+            ],
+            [
+              "release-a-python-package",
+              2.1366
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.5537
+            ]
+          ]
+        },
+        {
+          "id": "q14",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "docker-apt-get-update-cache",
+              4.9937
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              4.5629
+            ],
+            [
+              "modulenotfound-wrong-interpreter",
+              3.1837
+            ]
+          ]
+        },
+        {
+          "id": "q15",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "sort-order-depends-on-locale",
+              5.5994
+            ],
+            [
+              "python-mutable-default-arguments",
+              3.5699
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              2.537
+            ]
+          ]
+        },
+        {
+          "id": "q16",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "commit-message-style",
+              3.8288
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              2.1616
+            ],
+            [
+              "bisect-a-regression",
+              1.9365
+            ]
+          ]
+        },
+        {
+          "id": "q17",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "python-csv-writer-blank-lines-windows",
+              12.525
+            ],
+            [
+              "branch-naming",
+              5.4087
+            ],
+            [
+              "python-mutable-default-arguments",
+              2.5531
+            ]
+          ]
+        },
+        {
+          "id": "q18",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "python-mutable-default-arguments",
+              4.8398
+            ],
+            [
+              "profile-a-slow-python-function",
+              2.2624
+            ],
+            [
+              "port-already-in-use",
+              1.5772
+            ]
+          ]
+        },
+        {
+          "id": "q19",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "docker-copy-order-for-cache",
+              9.8885
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              3.0723
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              3.0467
+            ]
+          ]
+        },
+        {
+          "id": "q20",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "powershell-native-argument-quoting",
+              7.2483
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              7.1604
+            ],
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              4.7444
+            ]
+          ]
+        },
+        {
+          "id": "q21",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              11.0602
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              5.9853
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              3.0245
+            ]
+          ]
+        },
+        {
+          "id": "q22",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "sqlite-database-is-locked",
+              6.5459
+            ],
+            [
+              "sqlite-wal-mode-concurrency",
+              3.9486
+            ],
+            [
+              "write-a-database-migration",
+              1.8575
+            ]
+          ]
+        },
+        {
+          "id": "q23",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "port-already-in-use",
+              10.1579
+            ],
+            [
+              "too-many-open-files",
+              2.5985
+            ],
+            [
+              "gitignore-does-not-untrack-files",
+              2.141
+            ]
+          ]
+        },
+        {
+          "id": "q24",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "ssl-certificate-verify-failed-proxy",
+              14.3959
+            ],
+            [
+              "docker-apt-get-update-cache",
+              3.4075
+            ],
+            [
+              "python-datetime-utcnow-naive",
+              1.7007
+            ]
+          ]
+        },
+        {
+          "id": "q25",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "pip-hash-mismatch",
+              10.7376
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              3.4567
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              2.0458
+            ]
+          ]
+        },
+        {
+          "id": "q26",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "docker-permission-denied-socket",
+              17.568
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.7482
+            ],
+            [
+              "docker-apt-get-update-cache",
+              1.6048
+            ]
+          ]
+        },
+        {
+          "id": "q27",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "too-many-open-files",
+              10.6137
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              3.2681
+            ],
+            [
+              "port-already-in-use",
+              2.6743
+            ]
+          ]
+        },
+        {
+          "id": "q28",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "modulenotfound-wrong-interpreter",
+              12.4001
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              3.0977
+            ],
+            [
+              "pip-hash-mismatch",
+              2.8462
+            ]
+          ]
+        },
+        {
+          "id": "q29",
+          "kind": "error",
+          "rank": 2,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              6.9293
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              5.9853
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              3.0245
+            ]
+          ]
+        },
+        {
+          "id": "q30",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "npm-ci-lockfile-out-of-sync",
+              5.2968
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              4.8315
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              3.0838
+            ]
+          ]
+        },
+        {
+          "id": "q31",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "ripgrep-glob-single-quotes-windows",
+              5.6661
+            ],
+            [
+              "python-venv-layout-differs-on-windows",
+              1.3836
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              1.3031
+            ]
+          ]
+        },
+        {
+          "id": "q32",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              3.3292
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              3.1846
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              2.351
+            ]
+          ]
+        },
+        {
+          "id": "q33",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "reproduce-a-flaky-test",
+              4.3588
+            ],
+            [
+              "code-review-checklist",
+              0.961
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              0.7975
+            ]
+          ]
+        },
+        {
+          "id": "q34",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "python-datetime-utcnow-naive",
+              3.586
+            ],
+            [
+              "token-expiry-wrong-outside-utc",
+              2.0355
+            ]
+          ]
+        },
+        {
+          "id": "q35",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "release-a-python-package",
+              2.1773
+            ],
+            [
+              "bash-pipeline-exit-status",
+              1.1677
+            ],
+            [
+              "write-a-database-migration",
+              1.1243
+            ]
+          ]
+        },
+        {
+          "id": "q36",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "write-a-database-migration",
+              2.7616
+            ]
+          ]
+        },
+        {
+          "id": "q37",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "powershell-native-argument-quoting",
+              4.2944
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              3.2686
+            ],
+            [
+              "yaml-norway-problem",
+              0.9028
+            ]
+          ]
+        },
+        {
+          "id": "q38",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "floating-point-decimal-rounding",
+              2.3707
+            ]
+          ]
+        },
+        {
+          "id": "q39",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "token-expiry-wrong-outside-utc",
+              4.143
+            ]
+          ]
+        },
+        {
+          "id": "q40",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "code-review-checklist",
+              4.0221
+            ],
+            [
+              "pull-request-size",
+              2.6862
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.1691
+            ]
+          ]
+        },
+        {
+          "id": "q41",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "python-mutable-default-arguments",
+              4.1345
+            ],
+            [
+              "floating-point-decimal-rounding",
+              1.9561
+            ],
+            [
+              "pull-request-size",
+              1.9347
+            ]
+          ]
+        },
+        {
+          "id": "q43",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "npm-ci-out-of-sync-lockfile",
+              1.8244
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              1.7939
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              1.6162
+            ]
+          ]
+        },
+        {
+          "id": "q44",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "makefile-missing-separator",
+              2.6181
+            ]
+          ]
+        },
+        {
+          "id": "q45",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "docker-apt-get-update-cache",
+              1.1869
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.8671
+            ],
+            [
+              "docker-permission-denied-socket",
+              0.711
+            ]
+          ]
+        },
+        {
+          "id": "q46",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "npm-ci-out-of-sync-lockfile",
+              1.1906
+            ],
+            [
+              "modulenotfound-wrong-interpreter",
+              1.1349
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              1.1243
+            ]
+          ]
+        },
+        {
+          "id": "q47",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q48",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q49",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "makefile-missing-separator",
+              4.764
+            ]
+          ]
+        },
+        {
+          "id": "q50",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "profile-a-slow-python-function",
+              2.6686
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.5537
+            ],
+            [
+              "release-a-python-package",
+              1.5134
+            ]
+          ]
+        }
+      ]
+    },
+    "bm25-flat": {
+      "metrics": {
+        "hit@1": 0.875,
+        "hit@3": 1.0,
+        "mrr": 0.9375,
+        "none_any_result": 0.7,
+        "none_fp_at_threshold": 0.2
+      },
+      "hit@3_by_kind": {
+        "exact": 1.0,
+        "paraphrase": 1.0,
+        "error": 1.0,
+        "vague": 1.0
+      },
+      "threshold": 2.3185,
+      "per_query": [
+        {
+          "id": "q01",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              11.0685
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              8.0162
+            ],
+            [
+              "bash-pipeline-exit-status",
+              3.5909
+            ]
+          ]
+        },
+        {
+          "id": "q02",
+          "kind": "exact",
+          "rank": 2,
+          "top": [
+            [
+              "sqlite-database-is-locked",
+              6.8012
+            ],
+            [
+              "sqlite-wal-mode-concurrency",
+              6.6415
+            ],
+            [
+              "reproduce-a-flaky-test",
+              1.2
+            ]
+          ]
+        },
+        {
+          "id": "q03",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "npm-ci-lockfile-out-of-sync",
+              10.8253
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              10.3945
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              5.4271
+            ]
+          ]
+        },
+        {
+          "id": "q04",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "python-venv-layout-differs-on-windows",
+              9.0425
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              3.2107
+            ],
+            [
+              "shell-script-bad-interpreter-crlf",
+              3.1837
+            ]
+          ]
+        },
+        {
+          "id": "q05",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "git-push-rejected-non-fast-forward",
+              10.1767
+            ],
+            [
+              "rotate-a-leaked-secret",
+              2.0351
+            ],
+            [
+              "release-a-python-package",
+              1.2689
+            ]
+          ]
+        },
+        {
+          "id": "q06",
+          "kind": "exact",
+          "rank": 2,
+          "top": [
+            [
+              "gitignore-does-not-untrack-files",
+              4.3799
+            ],
+            [
+              "rotate-a-leaked-secret",
+              3.5866
+            ],
+            [
+              "code-review-checklist",
+              1.3822
+            ]
+          ]
+        },
+        {
+          "id": "q07",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "makefile-missing-separator",
+              8.8801
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              0.9859
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.9735
+            ]
+          ]
+        },
+        {
+          "id": "q08",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "profile-a-slow-python-function",
+              5.2923
+            ],
+            [
+              "python-mutable-default-arguments",
+              2.5975
+            ],
+            [
+              "python-venv-layout-differs-on-windows",
+              0.8103
+            ]
+          ]
+        },
+        {
+          "id": "q09",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "bash-pipeline-exit-status",
+              3.0855
+            ],
+            [
+              "write-a-database-migration",
+              2.0936
+            ],
+            [
+              "docker-apt-get-update-cache",
+              1.7784
+            ]
+          ]
+        },
+        {
+          "id": "q10",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              2.3185
+            ],
+            [
+              "docker-apt-get-update-cache",
+              1.9735
+            ],
+            [
+              "python-venv-layout-differs-on-windows",
+              1.1552
+            ]
+          ]
+        },
+        {
+          "id": "q11",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "yaml-norway-problem",
+              7.0634
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              2.5009
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              1.6674
+            ]
+          ]
+        },
+        {
+          "id": "q12",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "gitignore-does-not-untrack-files",
+              3.6394
+            ],
+            [
+              "sort-order-depends-on-locale",
+              2.8994
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              1.816
+            ]
+          ]
+        },
+        {
+          "id": "q13",
+          "kind": "paraphrase",
+          "rank": 2,
+          "top": [
+            [
+              "release-a-python-package",
+              2.1289
+            ],
+            [
+              "bisect-a-regression",
+              1.9032
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.3622
+            ]
+          ]
+        },
+        {
+          "id": "q14",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "docker-apt-get-update-cache",
+              4.5967
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              4.4678
+            ],
+            [
+              "modulenotfound-wrong-interpreter",
+              2.7596
+            ]
+          ]
+        },
+        {
+          "id": "q15",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "sort-order-depends-on-locale",
+              4.9628
+            ],
+            [
+              "python-mutable-default-arguments",
+              3.2711
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              2.0922
+            ]
+          ]
+        },
+        {
+          "id": "q16",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "commit-message-style",
+              3.6663
+            ],
+            [
+              "bisect-a-regression",
+              1.8106
+            ],
+            [
+              "sqlite-database-is-locked",
+              1.7237
+            ]
+          ]
+        },
+        {
+          "id": "q17",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "python-csv-writer-blank-lines-windows",
+              11.2873
+            ],
+            [
+              "branch-naming",
+              5.3252
+            ],
+            [
+              "python-mutable-default-arguments",
+              2.2709
+            ]
+          ]
+        },
+        {
+          "id": "q18",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "python-mutable-default-arguments",
+              4.3322
+            ],
+            [
+              "port-already-in-use",
+              1.5846
+            ],
+            [
+              "profile-a-slow-python-function",
+              1.3417
+            ]
+          ]
+        },
+        {
+          "id": "q19",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "docker-copy-order-for-cache",
+              8.2824
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              3.0724
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              2.8651
+            ]
+          ]
+        },
+        {
+          "id": "q20",
+          "kind": "paraphrase",
+          "rank": 2,
+          "top": [
+            [
+              "ripgrep-glob-single-quotes-windows",
+              7.3936
+            ],
+            [
+              "powershell-native-argument-quoting",
+              6.6335
+            ],
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              3.8138
+            ]
+          ]
+        },
+        {
+          "id": "q21",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              11.0026
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              6.0257
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              2.9842
+            ]
+          ]
+        },
+        {
+          "id": "q22",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "sqlite-database-is-locked",
+              5.8241
+            ],
+            [
+              "sqlite-wal-mode-concurrency",
+              3.8217
+            ],
+            [
+              "write-a-database-migration",
+              1.4034
+            ]
+          ]
+        },
+        {
+          "id": "q23",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "port-already-in-use",
+              9.0693
+            ],
+            [
+              "too-many-open-files",
+              2.5289
+            ],
+            [
+              "gitignore-does-not-untrack-files",
+              1.7727
+            ]
+          ]
+        },
+        {
+          "id": "q24",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "ssl-certificate-verify-failed-proxy",
+              13.1643
+            ],
+            [
+              "docker-apt-get-update-cache",
+              3.2026
+            ],
+            [
+              "python-datetime-utcnow-naive",
+              1.4034
+            ]
+          ]
+        },
+        {
+          "id": "q25",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "pip-hash-mismatch",
+              9.3241
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              2.7811
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.9778
+            ]
+          ]
+        },
+        {
+          "id": "q26",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "docker-permission-denied-socket",
+              15.7467
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.3622
+            ],
+            [
+              "docker-apt-get-update-cache",
+              1.3555
+            ]
+          ]
+        },
+        {
+          "id": "q27",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "too-many-open-files",
+              9.5884
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              3.106
+            ],
+            [
+              "port-already-in-use",
+              2.6834
+            ]
+          ]
+        },
+        {
+          "id": "q28",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "modulenotfound-wrong-interpreter",
+              11.3199
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              2.9983
+            ],
+            [
+              "docker-copy-order-for-cache",
+              2.4502
+            ]
+          ]
+        },
+        {
+          "id": "q29",
+          "kind": "error",
+          "rank": 2,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              6.8196
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              6.0257
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              2.9842
+            ]
+          ]
+        },
+        {
+          "id": "q30",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "npm-ci-lockfile-out-of-sync",
+              4.9472
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              4.3267
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              2.7114
+            ]
+          ]
+        },
+        {
+          "id": "q31",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "ripgrep-glob-single-quotes-windows",
+              5.6553
+            ],
+            [
+              "python-venv-layout-differs-on-windows",
+              1.3378
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              1.2269
+            ]
+          ]
+        },
+        {
+          "id": "q32",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              2.9007
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              2.1961
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              1.7422
+            ]
+          ]
+        },
+        {
+          "id": "q33",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "reproduce-a-flaky-test",
+              3.5293
+            ],
+            [
+              "code-review-checklist",
+              0.9583
+            ],
+            [
+              "token-expiry-wrong-outside-utc",
+              0.795
+            ]
+          ]
+        },
+        {
+          "id": "q34",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "python-datetime-utcnow-naive",
+              3.299
+            ],
+            [
+              "token-expiry-wrong-outside-utc",
+              1.7817
+            ]
+          ]
+        },
+        {
+          "id": "q35",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "release-a-python-package",
+              1.8833
+            ],
+            [
+              "write-a-database-migration",
+              1.1382
+            ],
+            [
+              "bash-pipeline-exit-status",
+              1.1299
+            ]
+          ]
+        },
+        {
+          "id": "q36",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "write-a-database-migration",
+              2.0936
+            ]
+          ]
+        },
+        {
+          "id": "q37",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "powershell-native-argument-quoting",
+              4.0674
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              3.4183
+            ],
+            [
+              "yaml-norway-problem",
+              1.0117
+            ]
+          ]
+        },
+        {
+          "id": "q38",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "floating-point-decimal-rounding",
+              2.1703
+            ]
+          ]
+        },
+        {
+          "id": "q39",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "token-expiry-wrong-outside-utc",
+              3.6419
+            ]
+          ]
+        },
+        {
+          "id": "q40",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "code-review-checklist",
+              3.3777
+            ],
+            [
+              "pull-request-size",
+              2.5053
+            ],
+            [
+              "write-a-database-migration",
+              0.7891
+            ]
+          ]
+        },
+        {
+          "id": "q41",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "python-mutable-default-arguments",
+              3.2701
+            ],
+            [
+              "pull-request-size",
+              1.8371
+            ],
+            [
+              "floating-point-decimal-rounding",
+              1.3625
+            ]
+          ]
+        },
+        {
+          "id": "q43",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "npm-ci-out-of-sync-lockfile",
+              1.6396
+            ],
+            [
+              "reproduce-a-flaky-test",
+              1.6092
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              1.6091
+            ]
+          ]
+        },
+        {
+          "id": "q44",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "makefile-missing-separator",
+              2.1368
+            ]
+          ]
+        },
+        {
+          "id": "q45",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "docker-apt-get-update-cache",
+              1.0471
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.8454
+            ],
+            [
+              "docker-permission-denied-socket",
+              0.7079
+            ]
+          ]
+        },
+        {
+          "id": "q46",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "npm-ci-out-of-sync-lockfile",
+              1.1908
+            ],
+            [
+              "modulenotfound-wrong-interpreter",
+              1.1136
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              1.0901
+            ]
+          ]
+        },
+        {
+          "id": "q47",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q48",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q49",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "makefile-missing-separator",
+              4.2735
+            ]
+          ]
+        },
+        {
+          "id": "q50",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "profile-a-slow-python-function",
+              1.5846
+            ],
+            [
+              "release-a-python-package",
+              1.51
+            ],
+            [
+              "docker-copy-order-for-cache",
+              1.3622
+            ]
+          ]
+        }
+      ]
+    },
+    "substring": {
+      "metrics": {
+        "hit@1": 0.9,
+        "hit@3": 1.0,
+        "mrr": 0.95,
+        "none_any_result": 0.7,
+        "none_fp_at_threshold": 0.1
+      },
+      "hit@3_by_kind": {
+        "exact": 1.0,
+        "paraphrase": 1.0,
+        "error": 1.0,
+        "vague": 1.0
+      },
+      "threshold": 0.4444,
+      "per_query": [
+        {
+          "id": "q01",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              1.0
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.7778
+            ],
+            [
+              "bash-pipeline-exit-status",
+              0.5556
+            ]
+          ]
+        },
+        {
+          "id": "q02",
+          "kind": "exact",
+          "rank": 2,
+          "top": [
+            [
+              "sqlite-database-is-locked",
+              1.0
+            ],
+            [
+              "sqlite-wal-mode-concurrency",
+              1.0
+            ],
+            [
+              "pip-hash-mismatch",
+              0.25
+            ]
+          ]
+        },
+        {
+          "id": "q03",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "npm-ci-lockfile-out-of-sync",
+              1.0
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              0.875
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              0.625
+            ]
+          ]
+        },
+        {
+          "id": "q04",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "python-venv-layout-differs-on-windows",
+              1.0
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              0.5
+            ],
+            [
+              "floating-point-decimal-rounding",
+              0.3333
+            ]
+          ]
+        },
+        {
+          "id": "q05",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "git-push-rejected-non-fast-forward",
+              1.0
+            ],
+            [
+              "rotate-a-leaked-secret",
+              0.3333
+            ],
+            [
+              "bisect-a-regression",
+              0.1667
+            ]
+          ]
+        },
+        {
+          "id": "q06",
+          "kind": "exact",
+          "rank": 2,
+          "top": [
+            [
+              "gitignore-does-not-untrack-files",
+              1.0
+            ],
+            [
+              "rotate-a-leaked-secret",
+              0.6667
+            ],
+            [
+              "code-review-checklist",
+              0.3333
+            ]
+          ]
+        },
+        {
+          "id": "q07",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "makefile-missing-separator",
+              1.0
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.25
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              0.25
+            ]
+          ]
+        },
+        {
+          "id": "q08",
+          "kind": "exact",
+          "rank": 1,
+          "top": [
+            [
+              "profile-a-slow-python-function",
+              1.0
+            ],
+            [
+              "python-mutable-default-arguments",
+              0.5
+            ],
+            [
+              "floating-point-decimal-rounding",
+              0.25
+            ]
+          ]
+        },
+        {
+          "id": "q09",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "bash-pipeline-exit-status",
+              0.3333
+            ],
+            [
+              "docker-apt-get-update-cache",
+              0.2222
+            ],
+            [
+              "modulenotfound-wrong-interpreter",
+              0.2222
+            ]
+          ]
+        },
+        {
+          "id": "q10",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              0.2857
+            ],
+            [
+              "docker-apt-get-update-cache",
+              0.1429
+            ],
+            [
+              "docker-permission-denied-socket",
+              0.1429
+            ]
+          ]
+        },
+        {
+          "id": "q11",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "yaml-norway-problem",
+              0.7143
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              0.4286
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.2857
+            ]
+          ]
+        },
+        {
+          "id": "q12",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "gitignore-does-not-untrack-files",
+              0.625
+            ],
+            [
+              "sort-order-depends-on-locale",
+              0.5
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.375
+            ]
+          ]
+        },
+        {
+          "id": "q13",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "bisect-a-regression",
+              0.5
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.5
+            ],
+            [
+              "release-a-python-package",
+              0.5
+            ]
+          ]
+        },
+        {
+          "id": "q14",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "docker-apt-get-update-cache",
+              0.5556
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.5556
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.4444
+            ]
+          ]
+        },
+        {
+          "id": "q15",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "sort-order-depends-on-locale",
+              0.5
+            ],
+            [
+              "docker-apt-get-update-cache",
+              0.2
+            ],
+            [
+              "gitignore-does-not-untrack-files",
+              0.2
+            ]
+          ]
+        },
+        {
+          "id": "q16",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "commit-message-style",
+              0.6
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.6
+            ],
+            [
+              "bisect-a-regression",
+              0.4
+            ]
+          ]
+        },
+        {
+          "id": "q17",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "python-csv-writer-blank-lines-windows",
+              0.8
+            ],
+            [
+              "branch-naming",
+              0.3
+            ],
+            [
+              "bash-pipeline-exit-status",
+              0.2
+            ]
+          ]
+        },
+        {
+          "id": "q18",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "python-mutable-default-arguments",
+              0.3333
+            ],
+            [
+              "gitignore-does-not-untrack-files",
+              0.1667
+            ],
+            [
+              "port-already-in-use",
+              0.1667
+            ]
+          ]
+        },
+        {
+          "id": "q19",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "docker-copy-order-for-cache",
+              0.7
+            ],
+            [
+              "lockfiles-pin-transitive-dependencies",
+              0.3
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.3
+            ]
+          ]
+        },
+        {
+          "id": "q20",
+          "kind": "paraphrase",
+          "rank": 1,
+          "top": [
+            [
+              "powershell-native-argument-quoting",
+              0.75
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              0.625
+            ],
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              0.25
+            ]
+          ]
+        },
+        {
+          "id": "q21",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              1.0
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              0.7778
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.4444
+            ]
+          ]
+        },
+        {
+          "id": "q22",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "sqlite-database-is-locked",
+              1.0
+            ],
+            [
+              "sqlite-wal-mode-concurrency",
+              0.75
+            ],
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              0.25
+            ]
+          ]
+        },
+        {
+          "id": "q23",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "port-already-in-use",
+              1.0
+            ],
+            [
+              "too-many-open-files",
+              0.5
+            ],
+            [
+              "gitignore-does-not-untrack-files",
+              0.3333
+            ]
+          ]
+        },
+        {
+          "id": "q24",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "ssl-certificate-verify-failed-proxy",
+              1.0
+            ],
+            [
+              "docker-apt-get-update-cache",
+              0.25
+            ],
+            [
+              "bash-pipeline-exit-status",
+              0.125
+            ]
+          ]
+        },
+        {
+          "id": "q25",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "pip-hash-mismatch",
+              1.0
+            ],
+            [
+              "docker-apt-get-update-cache",
+              0.3333
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.3333
+            ]
+          ]
+        },
+        {
+          "id": "q26",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "docker-permission-denied-socket",
+              1.0
+            ],
+            [
+              "docker-apt-get-update-cache",
+              0.125
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.125
+            ]
+          ]
+        },
+        {
+          "id": "q27",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "too-many-open-files",
+              1.0
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              0.4286
+            ],
+            [
+              "port-already-in-use",
+              0.2857
+            ]
+          ]
+        },
+        {
+          "id": "q28",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "modulenotfound-wrong-interpreter",
+              1.0
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.375
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.375
+            ]
+          ]
+        },
+        {
+          "id": "q29",
+          "kind": "error",
+          "rank": 2,
+          "top": [
+            [
+              "shell-script-bad-interpreter-crlf",
+              1.0
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              1.0
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.5
+            ]
+          ]
+        },
+        {
+          "id": "q30",
+          "kind": "error",
+          "rank": 1,
+          "top": [
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.4444
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              0.4444
+            ],
+            [
+              "too-many-open-files",
+              0.4444
+            ]
+          ]
+        },
+        {
+          "id": "q31",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "ripgrep-glob-single-quotes-windows",
+              1.0
+            ],
+            [
+              "powershell-native-argument-quoting",
+              0.6667
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.3333
+            ]
+          ]
+        },
+        {
+          "id": "q32",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "git-autocrlf-rewrites-line-endings",
+              1.0
+            ],
+            [
+              "python-csv-writer-blank-lines-windows",
+              1.0
+            ],
+            [
+              "shell-script-bad-interpreter-crlf",
+              1.0
+            ]
+          ]
+        },
+        {
+          "id": "q33",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "reproduce-a-flaky-test",
+              1.0
+            ],
+            [
+              "bisect-a-regression",
+              0.5
+            ],
+            [
+              "code-review-checklist",
+              0.5
+            ]
+          ]
+        },
+        {
+          "id": "q34",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "python-datetime-utcnow-naive",
+              1.0
+            ],
+            [
+              "bisect-a-regression",
+              0.5
+            ],
+            [
+              "code-review-checklist",
+              0.5
+            ]
+          ]
+        },
+        {
+          "id": "q35",
+          "kind": "vague",
+          "rank": 2,
+          "top": [
+            [
+              "bash-pipeline-exit-status",
+              1.0
+            ],
+            [
+              "release-a-python-package",
+              1.0
+            ],
+            [
+              "write-a-database-migration",
+              1.0
+            ]
+          ]
+        },
+        {
+          "id": "q36",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "write-a-database-migration",
+              1.0
+            ]
+          ]
+        },
+        {
+          "id": "q37",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "powershell-native-argument-quoting",
+              1.0
+            ],
+            [
+              "ripgrep-glob-single-quotes-windows",
+              1.0
+            ]
+          ]
+        },
+        {
+          "id": "q38",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "floating-point-decimal-rounding",
+              0.5
+            ]
+          ]
+        },
+        {
+          "id": "q39",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "token-expiry-wrong-outside-utc",
+              0.6667
+            ]
+          ]
+        },
+        {
+          "id": "q40",
+          "kind": "vague",
+          "rank": 1,
+          "top": [
+            [
+              "code-review-checklist",
+              1.0
+            ],
+            [
+              "pull-request-size",
+              1.0
+            ],
+            [
+              "docker-copy-order-for-cache",
+              0.5
+            ]
+          ]
+        },
+        {
+          "id": "q41",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "pull-request-size",
+              0.25
+            ],
+            [
+              "python-mutable-default-arguments",
+              0.25
+            ],
+            [
+              "bisect-a-regression",
+              0.125
+            ]
+          ]
+        },
+        {
+          "id": "q43",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "lockfiles-pin-transitive-dependencies",
+              0.2
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.2
+            ],
+            [
+              "npm-ci-out-of-sync-lockfile",
+              0.2
+            ]
+          ]
+        },
+        {
+          "id": "q44",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "floating-point-decimal-rounding",
+              0.4
+            ],
+            [
+              "json-large-integers-lose-precision-in-javascript",
+              0.2
+            ],
+            [
+              "makefile-missing-separator",
+              0.2
+            ]
+          ]
+        },
+        {
+          "id": "q45",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "modulenotfound-wrong-interpreter",
+              0.2
+            ]
+          ]
+        },
+        {
+          "id": "q46",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "bisect-a-regression",
+              0.2
+            ],
+            [
+              "docker-permission-denied-socket",
+              0.2
+            ],
+            [
+              "modulenotfound-wrong-interpreter",
+              0.2
+            ]
+          ]
+        },
+        {
+          "id": "q47",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q48",
+          "kind": "none",
+          "rank": null,
+          "top": []
+        },
+        {
+          "id": "q49",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "makefile-missing-separator",
+              0.5
+            ]
+          ]
+        },
+        {
+          "id": "q50",
+          "kind": "none",
+          "rank": null,
+          "top": [
+            [
+              "bash-pipeline-exit-status",
+              0.2
+            ],
+            [
+              "git-autocrlf-rewrites-line-endings",
+              0.2
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              0.2
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "recall_floor": {
+    "min_score": 1.5,
+    "kept": 0.95,
+    "none_fp": 0.5
+  }
+}
