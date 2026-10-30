@@ -9,7 +9,7 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from . import __version__
+from . import __version__, agents_cli
 from .brain import INDEX_FILE, Brain, CairnError, DuplicateError, resolve_root
 from .lint import lint
 from .model import STATUSES, TYPES, Entry, normalize_tags
@@ -21,7 +21,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     for stream in (sys.stdout, sys.stderr):
         with contextlib.suppress(AttributeError, ValueError):
             stream.reconfigure(errors="replace")  # type: ignore[union-attr]
-    args = build_parser().parse_args(argv)
+    try:
+        args = build_parser().parse_args(argv)
+    except SystemExit:
+        if agents_cli.is_claude_hook(argv):
+            return 0  # a hook with bad flags must not block the user's prompt
+        raise
     try:
         return args.func(args)
     except CairnError as exc:
@@ -83,6 +88,8 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("index", parents=[common], help=f"regenerate {INDEX_FILE}")
     p.add_argument("--check", action="store_true", help=f"fail if {INDEX_FILE} is out of date")
     p.set_defaults(func=cmd_index)
+
+    agents_cli.register(sub, common)
     return parser
 
 
