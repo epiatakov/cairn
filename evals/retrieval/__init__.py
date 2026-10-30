@@ -125,7 +125,7 @@ def calibrate_threshold(correct_top_scores: Sequence[float], keep: float = KEEP)
     if not correct_top_scores:
         return math.inf
     ordered = sorted(correct_top_scores)
-    return ordered[math.floor((1 - keep) * len(ordered))]
+    return ordered[math.floor(round((1 - keep) * len(ordered), 9))]
 
 
 def mean(values: Sequence[float]) -> float:
