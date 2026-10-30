@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "ruff==0.17.3"
+      - run: ruff check .
+      - run: ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: pytest
+      - name: Example brain stays clean and indexed
+        run: |
+          cairn lint --strict --brain examples/brain
+          cairn index --check --brain examples/brain
+      - name: Done-check from the README quickstart
+        run: |
+          top=$(cairn search "windows glob" --brain examples/brain --json --limit 1 \
+            | python -c "import json, sys; print(json.load(sys.stdin)['results'][0]['id'])")
+          test "$top" = "ripgrep-glob-on-windows"
