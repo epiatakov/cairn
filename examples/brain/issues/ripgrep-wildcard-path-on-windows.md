@@ -2,7 +2,7 @@
 id: ripgrep-wildcard-path-on-windows
 type: issue
 title: ripgrep rejects a wildcard path on Windows with "volume label syntax is incorrect"
-tags: [ripgrep, windows, glob, path]
+tags: [ripgrep, windows, path, wildcard]
 status: active
 created: 2026-02-03
 updated: 2026-10-27
@@ -16,7 +16,7 @@ last_seen: 2026-10-27
 workaround: Pass the directory and filter with a glob instead of a wildcard path, e.g. rg TODO C:\proj\src -g "*.py".
 ---
 
-**Symptom:** `rg TODO C:\proj\src\*` fails with
+**Symptom:** `rg TODO C:\proj\src\*` stops with
 `rg: C:\proj\src\*: The filename, directory name, or volume label syntax is incorrect. (os error 123)`.
 
 **Cause:** Windows shells do not expand `*` in arguments, so ripgrep receives the wildcard as a

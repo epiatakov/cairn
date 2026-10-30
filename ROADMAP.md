@@ -13,16 +13,18 @@ Each milestone is a small series of PRs. Items move to **Done** only when merged
 
 One brain, rendered into each tool's native format. Generated files are never edited by hand.
 
-- [ ] **Claude Code**: skills export to `.claude/skills/`, a `CLAUDE.md` pointer, hook wiring
-- [ ] **Codex**: an `AGENTS.md` section that points at the brain and its index
-- [ ] **GitHub Copilot**: `.github/copilot-instructions.md` generation
-- [ ] **Cursor**: project rules generation
+- [x] **Claude Code**: skills export to `.claude/skills/`, a `CLAUDE.md` pointer, hook wiring
+  (`cairn install claude`, `cairn skills export --tool claude`)
+- [x] **Codex**: an `AGENTS.md` section that points at the brain and its index
+- [x] **GitHub Copilot**: `.github/copilot-instructions.md` generation
+- [x] **Cursor**: project rules generation, plus skills as agent-requested rules
 - [ ] `cairn sync` to regenerate every adapter's output, with `--check` for CI
 
 ## Recall and capture hooks
 
-- [ ] **Recall gate**: before a task starts, search the brain with the prompt and inject the top
-  hits (built on `cairn search --json`)
+- [x] **Recall gate**: before a task starts, search the brain with the prompt and inject the top
+  hits (`cairn recall`, wired as a Claude Code `UserPromptSubmit` hook; skips trivial prompts)
+- [ ] Recall hooks for other tools, as they gain prompt hooks (today they get instructions only)
 - [ ] **Capture gate**: when a substantive task ends, require a capture or an explicit "nothing
   durable". Skip trivial turns such as pure Q&A (see "Lessons" in `docs/design.md`)
 - [ ] Capture helpers: `cairn add` from a hook payload, with near-duplicate merge suggestions

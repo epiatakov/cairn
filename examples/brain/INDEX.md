@@ -21,7 +21,7 @@
 - [npm-ci-fails-when-lockfile-out-of-sync](issues/npm-ci-fails-when-lockfile-out-of-sync.md): npm ci fails when package.json and package-lock.json are out of sync `npm, node, ci`
 - [powershell-strips-quotes-in-native-arguments](issues/powershell-strips-quotes-in-native-arguments.md): PowerShell strips embedded double quotes from native command arguments `powershell, windows, shell, json`
 - [ripgrep-glob-on-windows](issues/ripgrep-glob-on-windows.md): ripgrep glob on Windows matches nothing when single-quoted `ripgrep, windows, glob, shell`
-- [ripgrep-wildcard-path-on-windows](issues/ripgrep-wildcard-path-on-windows.md): ripgrep rejects a wildcard path on Windows with "volume label syntax is incorrect" `ripgrep, windows, glob, path`
+- [ripgrep-wildcard-path-on-windows](issues/ripgrep-wildcard-path-on-windows.md): ripgrep rejects a wildcard path on Windows with "volume label syntax is incorrect" `ripgrep, windows, path, wildcard`
 - [shell-script-bad-interpreter-crlf](issues/shell-script-bad-interpreter-crlf.md): Shell script fails with bad interpreter because of CRLF line endings `shell, bash, line-endings, docker`
 
 ## Notes (1)
