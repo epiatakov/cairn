@@ -35,8 +35,16 @@ One brain, rendered into each tool's native format. Generated files are never ed
 
 ## Eval harness
 
-- [ ] A/B runner: same task set, with and without the brain, per agent
-- [ ] Metrics: task success, turns and tokens to success, repeated-mistake rate
+- [x] Retrieval eval: 50 labeled queries on a 42-entry eval brain, cairn vs flat BM25 and
+  substring baselines, hit@1/hit@3/MRR and no-answer false positives, CI regression gate
+- [x] A/B runner: 13 scripted tasks with deterministic checkers, with and without brain recall;
+  a mock runner in CI and a Claude Code runner
+- [x] Metrics: task success, turns, tokens, wall time, repeated-known-failure rate
+- [ ] Real agent A/B results with Claude Code (needs an API budget)
+- [ ] Runners for Codex, Copilot and Cursor
+- [ ] A held-out query set written by someone who has not read the eval brain
+- [ ] Retrieval follow-ups the eval found: a score floor for recall, and not indexing
+  `[[link]]` ids as body text
 - [ ] Published results in the README, regenerated in CI on a schedule
 
 ## Later / optional

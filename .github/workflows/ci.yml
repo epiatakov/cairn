@@ -42,3 +42,13 @@ jobs:
           top=$(cairn search "windows glob" --brain examples/brain --json --limit 1 \
             | python -c "import json, sys; print(json.load(sys.stdin)['results'][0]['id'])")
           test "$top" = "ripgrep-glob-on-windows"
+      - name: Eval brain stays clean and indexed
+        run: |
+          cairn lint --strict --brain evals/brain
+          cairn index --check --brain evals/brain
+      - name: Retrieval eval (fails if cairn hit@3 drops below the baseline)
+        run: |
+          python -m evals.retrieval
+          git diff --exit-code evals/results/retrieval.json
+      - name: Agent harness self-test (mock runner)
+        run: python -m evals.agent --runner mock

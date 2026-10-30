@@ -7,7 +7,8 @@ Canonical instructions for coding agents (and humans) working on this repository
 
 cairn is "one second brain for every coding agent": a plain-Markdown knowledge store
 (`src/cairn/`) plus a CLI, `cairn`. Adapters for Claude Code, Codex, Copilot and Cursor,
-recall/capture hooks, a hot-issues board and an eval harness are planned (see `ROADMAP.md`).
+recall/capture hooks and a hot-issues board are planned (see `ROADMAP.md`). The eval harness
+lives in `evals/` (not part of the installed package).
 
 ## Stack
 
@@ -24,6 +25,8 @@ ruff check . && ruff format --check .   # lint and format check
 ruff format .                      # apply formatting
 cairn lint --brain examples/brain  # the example brain must stay clean
 cairn index --brain examples/brain # regenerate examples/brain/INDEX.md after editing examples
+python -m evals.retrieval          # retrieval eval; commit evals/results/retrieval.json if it changes
+python -m evals.agent --runner mock  # agent harness self-test
 ```
 
 ## Layout
@@ -38,7 +41,11 @@ cairn index --brain examples/brain # regenerate examples/brain/INDEX.md after ed
 | `src/cairn/lint.py` | Brain consistency checks |
 | `src/cairn/cli.py` | argparse CLI; keep logic in the modules above |
 | `examples/brain/` | Example brain used by docs and tests |
+| `evals/brain/` | Eval brain; changing it changes the published numbers |
+| `evals/retrieval/` | Labeled queries, baselines and metrics (`python -m evals.retrieval`) |
+| `evals/agent/` | Agent A/B tasks, checkers and runners (`python -m evals.agent`) |
 | `docs/design.md` | Data model and design decisions |
+| `docs/evals.md` | Eval method, datasets, metrics and threats to validity |
 
 ## Conventions
 
