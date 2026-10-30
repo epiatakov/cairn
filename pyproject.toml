@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cairn-brain"
+dynamic = ["version"]
+description = "One second brain for every coding agent: a plain-Markdown knowledge store with recall and capture."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "epiatakov" }]
+keywords = ["agents", "memory", "knowledge-base", "bm25", "claude-code", "codex", "copilot", "cursor"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff==0.17.3"]
+
+[project.scripts]
+cairn = "cairn.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/epiatakov/cairn"
+Issues = "https://github.com/epiatakov/cairn/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "cairn.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
