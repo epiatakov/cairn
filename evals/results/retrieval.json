@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "entries": 41,
   "queries": {
     "exact": 8,
@@ -13,9 +13,9 @@
   "retrievers": {
     "cairn-bm25f": {
       "metrics": {
-        "hit@1": 0.95,
+        "hit@1": 0.975,
         "hit@3": 1.0,
-        "mrr": 0.975,
+        "mrr": 0.9875,
         "none_any_result": 0.7,
         "none_fp_at_threshold": 0.2
       },
@@ -25,7 +25,7 @@
         "error": 1.0,
         "vague": 1.0
       },
-      "threshold": 2.7039,
+      "threshold": 2.7027,
       "per_query": [
         {
           "id": "q01",
@@ -34,15 +34,15 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              14.2783
+              14.6579
             ],
             [
               "git-autocrlf-rewrites-line-endings",
-              9.0638
+              6.6267
             ],
             [
               "bash-pipeline-exit-status",
-              4.0404
+              4.0204
             ]
           ]
         },
@@ -53,15 +53,15 @@
           "top": [
             [
               "sqlite-wal-mode-concurrency",
-              8.1579
+              8.0991
             ],
             [
               "sqlite-database-is-locked",
-              7.3668
+              6.4751
             ],
             [
               "reproduce-a-flaky-test",
-              1.179
+              1.1675
             ]
           ]
         },
@@ -72,15 +72,15 @@
           "top": [
             [
               "npm-ci-lockfile-out-of-sync",
-              12.8751
+              12.8893
             ],
             [
               "npm-ci-out-of-sync-lockfile",
-              11.2514
+              9.7839
             ],
             [
               "lockfiles-pin-transitive-dependencies",
-              6.0253
+              6.0084
             ]
           ]
         },
@@ -91,15 +91,15 @@
           "top": [
             [
               "python-venv-layout-differs-on-windows",
-              10.1666
+              10.1543
             ],
             [
               "utf8-bom-breaks-shebang",
-              3.6189
+              3.5932
             ],
             [
               "shell-script-bad-interpreter-crlf",
-              3.2739
+              3.3231
             ]
           ]
         },
@@ -110,34 +110,34 @@
           "top": [
             [
               "git-push-rejected-non-fast-forward",
-              12.6838
+              12.7626
             ],
             [
               "rotate-a-leaked-secret",
-              2.1298
+              2.2251
             ],
             [
-              "release-a-python-package",
-              1.2651
+              "bisect-a-regression",
+              1.3307
             ]
           ]
         },
         {
           "id": "q06",
           "kind": "exact",
-          "rank": 2,
+          "rank": 1,
           "top": [
             [
-              "gitignore-does-not-untrack-files",
-              4.6971
+              "rotate-a-leaked-secret",
+              4.9387
             ],
             [
-              "rotate-a-leaked-secret",
-              4.5135
+              "gitignore-does-not-untrack-files",
+              1.6886
             ],
             [
               "code-review-checklist",
-              1.3804
+              1.3705
             ]
           ]
         },
@@ -148,15 +148,15 @@
           "top": [
             [
               "makefile-missing-separator",
-              9.9927
-            ],
-            [
-              "ssl-certificate-verify-failed-proxy",
-              0.9635
+              9.9769
             ],
             [
               "npm-ci-lockfile-out-of-sync",
-              0.9559
+              0.975
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              0.9515
             ]
           ]
         },
@@ -167,15 +167,15 @@
           "top": [
             [
               "profile-a-slow-python-function",
-              8.5016
+              8.5011
             ],
             [
               "python-mutable-default-arguments",
-              3.0003
+              2.9968
             ],
             [
               "python-venv-layout-differs-on-windows",
-              0.8878
+              0.887
             ]
           ]
         },
@@ -186,15 +186,15 @@
           "top": [
             [
               "bash-pipeline-exit-status",
-              3.4421
+              3.4254
             ],
             [
               "write-a-database-migration",
-              2.3932
+              2.389
             ],
             [
               "docker-apt-get-update-cache",
-              1.8173
+              1.7978
             ]
           ]
         },
@@ -205,15 +205,15 @@
           "top": [
             [
               "json-large-integers-lose-precision-in-javascript",
-              2.3337
+              2.32
             ],
             [
               "docker-apt-get-update-cache",
-              2.1556
+              2.1534
             ],
             [
               "python-venv-layout-differs-on-windows",
-              1.1677
+              1.1561
             ]
           ]
         },
@@ -224,15 +224,15 @@
           "top": [
             [
               "yaml-norway-problem",
-              7.657
+              7.5996
             ],
             [
               "ssl-certificate-verify-failed-proxy",
-              2.4482
+              2.4429
             ],
             [
               "utf8-bom-breaks-shebang",
-              1.6615
+              1.6919
             ]
           ]
         },
@@ -243,15 +243,15 @@
           "top": [
             [
               "gitignore-does-not-untrack-files",
-              3.9964
+              4.0797
             ],
             [
               "sort-order-depends-on-locale",
-              2.9732
+              2.9717
             ],
             [
-              "rotate-a-leaked-secret",
-              2.2523
+              "ripgrep-glob-single-quotes-windows",
+              1.9264
             ]
           ]
         },
@@ -262,15 +262,15 @@
           "top": [
             [
               "bisect-a-regression",
-              2.7039
+              2.7027
             ],
             [
               "release-a-python-package",
-              2.1366
+              2.1225
             ],
             [
               "docker-copy-order-for-cache",
-              1.5537
+              1.5504
             ]
           ]
         },
@@ -281,15 +281,15 @@
           "top": [
             [
               "docker-apt-get-update-cache",
-              4.9937
+              4.9727
             ],
             [
               "npm-ci-lockfile-out-of-sync",
-              4.5629
+              4.6146
             ],
             [
               "modulenotfound-wrong-interpreter",
-              3.1837
+              3.1786
             ]
           ]
         },
@@ -300,15 +300,15 @@
           "top": [
             [
               "sort-order-depends-on-locale",
-              5.5994
+              5.5877
             ],
             [
               "python-mutable-default-arguments",
-              3.5699
+              3.5576
             ],
             [
               "utf8-bom-breaks-shebang",
-              2.537
+              2.5771
             ]
           ]
         },
@@ -319,15 +319,15 @@
           "top": [
             [
               "commit-message-style",
-              3.8288
+              3.8103
             ],
             [
               "git-autocrlf-rewrites-line-endings",
-              2.1616
+              2.1645
             ],
             [
               "bisect-a-regression",
-              1.9365
+              1.9257
             ]
           ]
         },
@@ -338,15 +338,15 @@
           "top": [
             [
               "python-csv-writer-blank-lines-windows",
-              12.525
+              12.4796
             ],
             [
               "branch-naming",
-              5.4087
+              5.3784
             ],
             [
               "python-mutable-default-arguments",
-              2.5531
+              2.5447
             ]
           ]
         },
@@ -357,7 +357,7 @@
           "top": [
             [
               "python-mutable-default-arguments",
-              4.8398
+              4.8321
             ],
             [
               "profile-a-slow-python-function",
@@ -365,7 +365,7 @@
             ],
             [
               "port-already-in-use",
-              1.5772
+              1.5619
             ]
           ]
         },
@@ -376,15 +376,15 @@
           "top": [
             [
               "docker-copy-order-for-cache",
-              9.8885
+              9.8542
             ],
             [
               "lockfiles-pin-transitive-dependencies",
-              3.0723
+              3.057
             ],
             [
-              "npm-ci-lockfile-out-of-sync",
-              3.0467
+              "npm-ci-out-of-sync-lockfile",
+              2.7431
             ]
           ]
         },
@@ -395,15 +395,15 @@
           "top": [
             [
               "powershell-native-argument-quoting",
-              7.2483
+              7.239
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              7.1604
+              5.5625
             ],
             [
               "json-large-integers-lose-precision-in-javascript",
-              4.7444
+              4.7324
             ]
           ]
         },
@@ -414,15 +414,15 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              11.0602
+              11.3084
             ],
             [
               "utf8-bom-breaks-shebang",
-              5.9853
+              5.973
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              3.0245
+              3.1241
             ]
           ]
         },
@@ -433,11 +433,11 @@
           "top": [
             [
               "sqlite-database-is-locked",
-              6.5459
+              7.0093
             ],
             [
               "sqlite-wal-mode-concurrency",
-              3.9486
+              2.7261
             ],
             [
               "write-a-database-migration",
@@ -452,15 +452,15 @@
           "top": [
             [
               "port-already-in-use",
-              10.1579
+              10.1114
             ],
             [
               "too-many-open-files",
-              2.5985
+              2.5721
             ],
             [
               "gitignore-does-not-untrack-files",
-              2.141
+              2.1462
             ]
           ]
         },
@@ -471,15 +471,15 @@
           "top": [
             [
               "ssl-certificate-verify-failed-proxy",
-              14.3959
+              14.327
             ],
             [
               "docker-apt-get-update-cache",
-              3.4075
+              3.3919
             ],
             [
               "python-datetime-utcnow-naive",
-              1.7007
+              1.6985
             ]
           ]
         },
@@ -490,15 +490,15 @@
           "top": [
             [
               "pip-hash-mismatch",
-              10.7376
+              10.7743
             ],
             [
               "npm-ci-out-of-sync-lockfile",
-              3.4567
+              3.5225
             ],
             [
               "npm-ci-lockfile-out-of-sync",
-              2.0458
+              2.0823
             ]
           ]
         },
@@ -509,7 +509,7 @@
           "top": [
             [
               "docker-permission-denied-socket",
-              17.568
+              17.5181
             ],
             [
               "docker-copy-order-for-cache",
@@ -517,7 +517,7 @@
             ],
             [
               "docker-apt-get-update-cache",
-              1.6048
+              1.602
             ]
           ]
         },
@@ -528,15 +528,15 @@
           "top": [
             [
               "too-many-open-files",
-              10.6137
+              10.6191
             ],
             [
               "python-csv-writer-blank-lines-windows",
-              3.2681
+              3.2975
             ],
             [
               "port-already-in-use",
-              2.6743
+              2.6483
             ]
           ]
         },
@@ -547,15 +547,15 @@
           "top": [
             [
               "modulenotfound-wrong-interpreter",
-              12.4001
+              12.3449
             ],
             [
               "ssl-certificate-verify-failed-proxy",
-              3.0977
+              3.0818
             ],
             [
               "pip-hash-mismatch",
-              2.8462
+              2.8447
             ]
           ]
         },
@@ -566,15 +566,15 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              6.9293
+              7.0829
             ],
             [
               "utf8-bom-breaks-shebang",
-              5.9853
+              5.973
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              3.0245
+              3.1241
             ]
           ]
         },
@@ -585,15 +585,15 @@
           "top": [
             [
               "npm-ci-lockfile-out-of-sync",
-              5.2968
+              5.3592
             ],
             [
               "npm-ci-out-of-sync-lockfile",
-              4.8315
+              4.8726
             ],
             [
               "lockfiles-pin-transitive-dependencies",
-              3.0838
+              3.0752
             ]
           ]
         },
@@ -604,15 +604,15 @@
           "top": [
             [
               "ripgrep-glob-single-quotes-windows",
-              5.6661
+              5.6834
             ],
             [
               "python-venv-layout-differs-on-windows",
-              1.3836
+              1.3825
             ],
             [
               "python-csv-writer-blank-lines-windows",
-              1.3031
+              1.3022
             ]
           ]
         },
@@ -623,7 +623,7 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              3.3292
+              3.2551
             ],
             [
               "git-autocrlf-rewrites-line-endings",
@@ -642,15 +642,15 @@
           "top": [
             [
               "reproduce-a-flaky-test",
-              4.3588
+              4.3573
             ],
             [
               "code-review-checklist",
-              0.961
+              0.9541
             ],
             [
-              "lockfiles-pin-transitive-dependencies",
-              0.7975
+              "token-expiry-wrong-outside-utc",
+              0.8209
             ]
           ]
         },
@@ -661,11 +661,11 @@
           "top": [
             [
               "python-datetime-utcnow-naive",
-              3.586
+              3.5669
             ],
             [
               "token-expiry-wrong-outside-utc",
-              2.0355
+              2.046
             ]
           ]
         },
@@ -676,15 +676,15 @@
           "top": [
             [
               "release-a-python-package",
-              2.1773
+              2.1765
             ],
             [
               "bash-pipeline-exit-status",
-              1.1677
+              1.1561
             ],
             [
               "write-a-database-migration",
-              1.1243
+              1.1126
             ]
           ]
         },
@@ -706,15 +706,15 @@
           "top": [
             [
               "powershell-native-argument-quoting",
-              4.2944
+              4.2891
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              3.2686
+              2.8338
             ],
             [
               "yaml-norway-problem",
-              0.9028
+              0.892
             ]
           ]
         },
@@ -725,7 +725,7 @@
           "top": [
             [
               "floating-point-decimal-rounding",
-              2.3707
+              2.3656
             ]
           ]
         },
@@ -736,7 +736,7 @@
           "top": [
             [
               "token-expiry-wrong-outside-utc",
-              4.143
+              4.1956
             ]
           ]
         },
@@ -747,7 +747,7 @@
           "top": [
             [
               "code-review-checklist",
-              4.0221
+              4.0217
             ],
             [
               "pull-request-size",
@@ -772,7 +772,7 @@
           "top": [
             [
               "python-mutable-default-arguments",
-              4.1345
+              4.1318
             ],
             [
               "floating-point-decimal-rounding",
@@ -780,7 +780,7 @@
             ],
             [
               "pull-request-size",
-              1.9347
+              1.9226
             ]
           ]
         },
@@ -791,15 +791,15 @@
           "top": [
             [
               "npm-ci-out-of-sync-lockfile",
-              1.8244
+              1.8367
             ],
             [
               "npm-ci-lockfile-out-of-sync",
-              1.7939
+              1.7996
             ],
             [
               "lockfiles-pin-transitive-dependencies",
-              1.6162
+              1.6076
             ]
           ]
         },
@@ -810,7 +810,7 @@
           "top": [
             [
               "makefile-missing-separator",
-              2.6181
+              2.6154
             ]
           ]
         },
@@ -821,15 +821,15 @@
           "top": [
             [
               "docker-apt-get-update-cache",
-              1.1869
+              1.1858
             ],
             [
               "docker-copy-order-for-cache",
-              0.8671
+              0.8608
             ],
             [
               "docker-permission-denied-socket",
-              0.711
+              0.7049
             ]
           ]
         },
@@ -840,15 +840,15 @@
           "top": [
             [
               "npm-ci-out-of-sync-lockfile",
-              1.1906
+              1.2411
             ],
             [
               "modulenotfound-wrong-interpreter",
-              1.1349
+              1.1232
             ],
             [
               "python-csv-writer-blank-lines-windows",
-              1.1243
+              1.1126
             ]
           ]
         },
@@ -871,7 +871,7 @@
           "top": [
             [
               "makefile-missing-separator",
-              4.764
+              4.7471
             ]
           ]
         },
@@ -886,11 +886,11 @@
             ],
             [
               "docker-copy-order-for-cache",
-              1.5537
+              1.5504
             ],
             [
               "release-a-python-package",
-              1.5134
+              1.5047
             ]
           ]
         }
@@ -898,9 +898,9 @@
     },
     "bm25-flat": {
       "metrics": {
-        "hit@1": 0.875,
+        "hit@1": 0.95,
         "hit@3": 1.0,
-        "mrr": 0.9375,
+        "mrr": 0.975,
         "none_any_result": 0.7,
         "none_fp_at_threshold": 0.2
       },
@@ -910,7 +910,7 @@
         "error": 1.0,
         "vague": 1.0
       },
-      "threshold": 2.3185,
+      "threshold": 2.3089,
       "per_query": [
         {
           "id": "q01",
@@ -919,34 +919,34 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              11.0685
+              11.3403
             ],
             [
               "git-autocrlf-rewrites-line-endings",
-              8.0162
+              5.5081
             ],
             [
               "bash-pipeline-exit-status",
-              3.5909
+              3.5702
             ]
           ]
         },
         {
           "id": "q02",
           "kind": "exact",
-          "rank": 2,
+          "rank": 1,
           "top": [
             [
-              "sqlite-database-is-locked",
-              6.8012
+              "sqlite-wal-mode-concurrency",
+              6.4213
             ],
             [
-              "sqlite-wal-mode-concurrency",
-              6.6415
+              "sqlite-database-is-locked",
+              5.6046
             ],
             [
               "reproduce-a-flaky-test",
-              1.2
+              1.1921
             ]
           ]
         },
@@ -957,15 +957,15 @@
           "top": [
             [
               "npm-ci-lockfile-out-of-sync",
-              10.8253
+              10.7459
             ],
             [
               "npm-ci-out-of-sync-lockfile",
-              10.3945
+              8.761
             ],
             [
               "lockfiles-pin-transitive-dependencies",
-              5.4271
+              5.4026
             ]
           ]
         },
@@ -976,15 +976,15 @@
           "top": [
             [
               "python-venv-layout-differs-on-windows",
-              9.0425
-            ],
-            [
-              "utf8-bom-breaks-shebang",
-              3.2107
+              9.0137
             ],
             [
               "shell-script-bad-interpreter-crlf",
-              3.1837
+              3.2339
+            ],
+            [
+              "utf8-bom-breaks-shebang",
+              3.1872
             ]
           ]
         },
@@ -995,34 +995,34 @@
           "top": [
             [
               "git-push-rejected-non-fast-forward",
-              10.1767
+              10.2097
             ],
             [
               "rotate-a-leaked-secret",
-              2.0351
+              2.1274
             ],
             [
               "release-a-python-package",
-              1.2689
+              1.2614
             ]
           ]
         },
         {
           "id": "q06",
           "kind": "exact",
-          "rank": 2,
+          "rank": 1,
           "top": [
             [
-              "gitignore-does-not-untrack-files",
-              4.3799
-            ],
-            [
               "rotate-a-leaked-secret",
-              3.5866
+              3.9487
             ],
             [
               "code-review-checklist",
-              1.3822
+              1.3755
+            ],
+            [
+              "gitignore-does-not-untrack-files",
+              1.1559
             ]
           ]
         },
@@ -1033,15 +1033,15 @@
           "top": [
             [
               "makefile-missing-separator",
-              8.8801
-            ],
-            [
-              "ssl-certificate-verify-failed-proxy",
-              0.9859
+              8.8478
             ],
             [
               "npm-ci-lockfile-out-of-sync",
-              0.9735
+              0.9903
+            ],
+            [
+              "ssl-certificate-verify-failed-proxy",
+              0.9775
             ]
           ]
         },
@@ -1052,15 +1052,15 @@
           "top": [
             [
               "profile-a-slow-python-function",
-              5.2923
+              5.2598
             ],
             [
               "python-mutable-default-arguments",
-              2.5975
+              2.5871
             ],
             [
               "python-venv-layout-differs-on-windows",
-              0.8103
+              0.8083
             ]
           ]
         },
@@ -1071,15 +1071,15 @@
           "top": [
             [
               "bash-pipeline-exit-status",
-              3.0855
+              3.0684
             ],
             [
               "write-a-database-migration",
-              2.0936
+              2.0834
             ],
             [
               "docker-apt-get-update-cache",
-              1.7784
+              1.7649
             ]
           ]
         },
@@ -1090,15 +1090,15 @@
           "top": [
             [
               "json-large-integers-lose-precision-in-javascript",
-              2.3185
+              2.3089
             ],
             [
               "docker-apt-get-update-cache",
-              1.9735
+              1.968
             ],
             [
               "python-venv-layout-differs-on-windows",
-              1.1552
+              1.1472
             ]
           ]
         },
@@ -1109,15 +1109,15 @@
           "top": [
             [
               "yaml-norway-problem",
-              7.0634
+              7.0141
             ],
             [
               "ssl-certificate-verify-failed-proxy",
-              2.5009
+              2.5058
             ],
             [
               "utf8-bom-breaks-shebang",
-              1.6674
+              1.7036
             ]
           ]
         },
@@ -1128,15 +1128,15 @@
           "top": [
             [
               "gitignore-does-not-untrack-files",
-              3.6394
+              3.729
             ],
             [
               "sort-order-depends-on-locale",
-              2.8994
+              2.9069
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              1.816
+              1.8952
             ]
           ]
         },
@@ -1147,15 +1147,15 @@
           "top": [
             [
               "release-a-python-package",
-              2.1289
+              2.1193
             ],
             [
               "bisect-a-regression",
-              1.9032
+              1.8927
             ],
             [
-              "docker-copy-order-for-cache",
-              1.3622
+              "npm-ci-lockfile-out-of-sync",
+              1.3731
             ]
           ]
         },
@@ -1166,15 +1166,15 @@
           "top": [
             [
               "docker-apt-get-update-cache",
-              4.5967
+              4.5746
             ],
             [
               "npm-ci-lockfile-out-of-sync",
-              4.4678
+              4.5181
             ],
             [
               "modulenotfound-wrong-interpreter",
-              2.7596
+              2.7479
             ]
           ]
         },
@@ -1185,15 +1185,15 @@
           "top": [
             [
               "sort-order-depends-on-locale",
-              4.9628
+              4.9549
             ],
             [
               "python-mutable-default-arguments",
-              3.2711
+              3.257
             ],
             [
               "utf8-bom-breaks-shebang",
-              2.0922
+              2.1279
             ]
           ]
         },
@@ -1204,15 +1204,15 @@
           "top": [
             [
               "commit-message-style",
-              3.6663
+              3.6516
             ],
             [
               "bisect-a-regression",
-              1.8106
+              1.8008
             ],
             [
               "sqlite-database-is-locked",
-              1.7237
+              1.7511
             ]
           ]
         },
@@ -1223,15 +1223,15 @@
           "top": [
             [
               "python-csv-writer-blank-lines-windows",
-              11.2873
+              11.2292
             ],
             [
               "branch-naming",
-              5.3252
+              5.3037
             ],
             [
               "python-mutable-default-arguments",
-              2.2709
+              2.2599
             ]
           ]
         },
@@ -1242,15 +1242,15 @@
           "top": [
             [
               "python-mutable-default-arguments",
-              4.3322
+              4.3163
             ],
             [
               "port-already-in-use",
-              1.5846
+              1.574
             ],
             [
               "profile-a-slow-python-function",
-              1.3417
+              1.3327
             ]
           ]
         },
@@ -1261,34 +1261,34 @@
           "top": [
             [
               "docker-copy-order-for-cache",
-              8.2824
-            ],
-            [
-              "npm-ci-lockfile-out-of-sync",
-              3.0724
+              8.2327
             ],
             [
               "lockfiles-pin-transitive-dependencies",
-              2.8651
+              2.8508
+            ],
+            [
+              "npm-ci-lockfile-out-of-sync",
+              2.7632
             ]
           ]
         },
         {
           "id": "q20",
           "kind": "paraphrase",
-          "rank": 2,
+          "rank": 1,
           "top": [
             [
-              "ripgrep-glob-single-quotes-windows",
-              7.3936
+              "powershell-native-argument-quoting",
+              6.6074
             ],
             [
-              "powershell-native-argument-quoting",
-              6.6335
+              "ripgrep-glob-single-quotes-windows",
+              5.7884
             ],
             [
               "json-large-integers-lose-precision-in-javascript",
-              3.8138
+              3.7901
             ]
           ]
         },
@@ -1299,15 +1299,15 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              11.0026
+              11.2279
             ],
             [
               "utf8-bom-breaks-shebang",
-              6.0257
+              6.0324
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              2.9842
+              3.0735
             ]
           ]
         },
@@ -1318,15 +1318,15 @@
           "top": [
             [
               "sqlite-database-is-locked",
-              5.8241
+              6.2252
             ],
             [
               "sqlite-wal-mode-concurrency",
-              3.8217
+              2.4796
             ],
             [
               "write-a-database-migration",
-              1.4034
+              1.3965
             ]
           ]
         },
@@ -1337,15 +1337,15 @@
           "top": [
             [
               "port-already-in-use",
-              9.0693
+              9.0187
             ],
             [
               "too-many-open-files",
-              2.5289
+              2.5103
             ],
             [
               "gitignore-does-not-untrack-files",
-              1.7727
+              1.7915
             ]
           ]
         },
@@ -1356,15 +1356,15 @@
           "top": [
             [
               "ssl-certificate-verify-failed-proxy",
-              13.1643
+              13.0892
             ],
             [
               "docker-apt-get-update-cache",
-              3.2026
+              3.1877
             ],
             [
               "python-datetime-utcnow-naive",
-              1.4034
+              1.3965
             ]
           ]
         },
@@ -1375,15 +1375,15 @@
           "top": [
             [
               "pip-hash-mismatch",
-              9.3241
+              9.3365
             ],
             [
               "npm-ci-out-of-sync-lockfile",
-              2.7811
+              2.8886
             ],
             [
               "docker-copy-order-for-cache",
-              1.9778
+              1.9698
             ]
           ]
         },
@@ -1394,15 +1394,15 @@
           "top": [
             [
               "docker-permission-denied-socket",
-              15.7467
+              15.6825
             ],
             [
               "docker-copy-order-for-cache",
-              1.3622
+              1.355
             ],
             [
               "docker-apt-get-update-cache",
-              1.3555
+              1.3483
             ]
           ]
         },
@@ -1413,15 +1413,15 @@
           "top": [
             [
               "too-many-open-files",
-              9.5884
+              9.588
             ],
             [
               "python-csv-writer-blank-lines-windows",
-              3.106
+              3.1351
             ],
             [
               "port-already-in-use",
-              2.6834
+              2.6653
             ]
           ]
         },
@@ -1432,15 +1432,15 @@
           "top": [
             [
               "modulenotfound-wrong-interpreter",
-              11.3199
+              11.2621
             ],
             [
               "ssl-certificate-verify-failed-proxy",
-              2.9983
+              2.984
             ],
             [
               "docker-copy-order-for-cache",
-              2.4502
+              2.4397
             ]
           ]
         },
@@ -1451,15 +1451,15 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              6.8196
+              6.9649
             ],
             [
               "utf8-bom-breaks-shebang",
-              6.0257
+              6.0324
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              2.9842
+              3.0735
             ]
           ]
         },
@@ -1470,15 +1470,15 @@
           "top": [
             [
               "npm-ci-lockfile-out-of-sync",
-              4.9472
+              5.0213
             ],
             [
               "npm-ci-out-of-sync-lockfile",
-              4.3267
+              4.3522
             ],
             [
               "lockfiles-pin-transitive-dependencies",
-              2.7114
+              2.6971
             ]
           ]
         },
@@ -1489,15 +1489,15 @@
           "top": [
             [
               "ripgrep-glob-single-quotes-windows",
-              5.6553
+              5.7211
             ],
             [
               "python-venv-layout-differs-on-windows",
-              1.3378
+              1.3339
             ],
             [
               "git-autocrlf-rewrites-line-endings",
-              1.2269
+              1.2398
             ]
           ]
         },
@@ -1508,15 +1508,15 @@
           "top": [
             [
               "shell-script-bad-interpreter-crlf",
-              2.9007
+              2.7141
             ],
             [
               "git-autocrlf-rewrites-line-endings",
-              2.1961
+              2.2321
             ],
             [
               "python-csv-writer-blank-lines-windows",
-              1.7422
+              1.729
             ]
           ]
         },
@@ -1527,15 +1527,15 @@
           "top": [
             [
               "reproduce-a-flaky-test",
-              3.5293
+              3.516
             ],
             [
               "code-review-checklist",
-              0.9583
+              0.9536
             ],
             [
               "token-expiry-wrong-outside-utc",
-              0.795
+              0.8137
             ]
           ]
         },
@@ -1546,11 +1546,11 @@
           "top": [
             [
               "python-datetime-utcnow-naive",
-              3.299
+              3.2795
             ],
             [
               "token-expiry-wrong-outside-utc",
-              1.7817
+              1.8103
             ]
           ]
         },
@@ -1561,15 +1561,15 @@
           "top": [
             [
               "release-a-python-package",
-              1.8833
+              1.8778
             ],
             [
               "write-a-database-migration",
-              1.1382
+              1.1301
             ],
             [
               "bash-pipeline-exit-status",
-              1.1299
+              1.1218
             ]
           ]
         },
@@ -1580,7 +1580,7 @@
           "top": [
             [
               "write-a-database-migration",
-              2.0936
+              2.0834
             ]
           ]
         },
@@ -1591,15 +1591,15 @@
           "top": [
             [
               "powershell-native-argument-quoting",
-              4.0674
+              4.0549
             ],
             [
               "ripgrep-glob-single-quotes-windows",
-              3.4183
+              2.9787
             ],
             [
               "yaml-norway-problem",
-              1.0117
+              1.0033
             ]
           ]
         },
@@ -1610,7 +1610,7 @@
           "top": [
             [
               "floating-point-decimal-rounding",
-              2.1703
+              2.1607
             ]
           ]
         },
@@ -1621,7 +1621,7 @@
           "top": [
             [
               "token-expiry-wrong-outside-utc",
-              3.6419
+              3.712
             ]
           ]
         },
@@ -1632,15 +1632,15 @@
           "top": [
             [
               "code-review-checklist",
-              3.3777
+              3.3683
             ],
             [
               "pull-request-size",
-              2.5053
+              2.4928
             ],
             [
               "write-a-database-migration",
-              0.7891
+              0.7835
             ]
           ]
         },
@@ -1657,15 +1657,15 @@
           "top": [
             [
               "python-mutable-default-arguments",
-              3.2701
+              3.2526
             ],
             [
               "pull-request-size",
-              1.8371
+              1.8279
             ],
             [
               "floating-point-decimal-rounding",
-              1.3625
+              1.3536
             ]
           ]
         },
@@ -1676,15 +1676,15 @@
           "top": [
             [
               "npm-ci-out-of-sync-lockfile",
-              1.6396
-            ],
-            [
-              "reproduce-a-flaky-test",
-              1.6092
+              1.6673
             ],
             [
               "npm-ci-lockfile-out-of-sync",
-              1.6091
+              1.6217
+            ],
+            [
+              "reproduce-a-flaky-test",
+              1.5986
             ]
           ]
         },
@@ -1695,7 +1695,7 @@
           "top": [
             [
               "makefile-missing-separator",
-              2.1368
+              2.1269
             ]
           ]
         },
@@ -1706,15 +1706,15 @@
           "top": [
             [
               "docker-apt-get-update-cache",
-              1.0471
+              1.0437
             ],
             [
               "docker-copy-order-for-cache",
-              0.8454
+              0.841
             ],
             [
               "docker-permission-denied-socket",
-              0.7079
+              0.7037
             ]
           ]
         },
@@ -1725,15 +1725,15 @@
           "top": [
             [
               "npm-ci-out-of-sync-lockfile",
-              1.1908
+              1.2307
             ],
             [
               "modulenotfound-wrong-interpreter",
-              1.1136
+              1.1055
             ],
             [
               "python-csv-writer-blank-lines-windows",
-              1.0901
+              1.0819
             ]
           ]
         },
@@ -1756,7 +1756,7 @@
           "top": [
             [
               "makefile-missing-separator",
-              4.2735
+              4.2537
             ]
           ]
         },
@@ -1767,15 +1767,15 @@
           "top": [
             [
               "profile-a-slow-python-function",
-              1.5846
+              1.574
             ],
             [
               "release-a-python-package",
-              1.51
+              1.5041
             ],
             [
               "docker-copy-order-for-cache",
-              1.3622
+              1.355
             ]
           ]
         }
@@ -2667,9 +2667,18 @@
       ]
     }
   },
-  "recall_floor": {
+  "recall_gate": {
     "min_score": 1.5,
-    "kept": 0.95,
-    "none_fp": 0.5
+    "min_terms": 2,
+    "kept": 0.925,
+    "none_fp": 0.2,
+    "none_fp_ids": [
+      "q42",
+      "q49"
+    ],
+    "dropped_ids": [
+      "q10",
+      "q38"
+    ]
   }
 }

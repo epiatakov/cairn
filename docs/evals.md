@@ -52,9 +52,11 @@ All three see the same live (non-archived) entries, return at most 10 results, a
 ties by id.
 
 - **`cairn-bm25f`**: cairn's own search through the public `Brain.search` API. BM25F with
-  title, tags and body weighted 3 : 2 : 1 (see [design.md](design.md)).
-- **`bm25-flat`**: the same BM25 (same tokenizer, `k1`, `b`), but over a single field with
-  title, tags and body concatenated. The only difference from cairn is field weighting.
+  title, tags and body weighted 3 : 2 : 1 (see [design.md](design.md)). `[[link]]` ids in
+  bodies are not indexed (see "Changes after the first run").
+- **`bm25-flat`**: the same BM25 (same tokenizer, `k1`, `b`, and the same link handling), but
+  over a single field with title, tags and body concatenated. The only difference from cairn
+  is field weighting.
 - **`substring`**: grep-style. The score is the share of distinct query words found as
   substrings of the lowercased entry text. It drops cairn's stopwords, otherwise `the` would
   match everything, but has no stemming, no IDF and no field weights.
@@ -73,8 +75,10 @@ On the 10 no-answer queries:
   not comparable across retrievers, so each gets its own operating point: the lowest score
   that still keeps 90% of its correct top-1 hits on answerable queries. The no-answer queries
   never influence the threshold.
-- **recall floor** (cairn only): the same two shares at the recall hook's fixed
-  `min_score`, so the shipped default is measured, not assumed.
+- **recall gate** (cairn only): `cairn.recall.recall`, the exact selection the recall hook
+  ships, run on every query. `kept` is the share of answerable queries whose first recalled
+  entry is correct; `none_fp` is the share of no-answer queries for which recall returns
+  anything. The gate is fixed in code, so the shipped default is measured, not assumed.
 
 ### Results
 
@@ -82,8 +86,8 @@ On the 10 no-answer queries:
 
 | Retriever | hit@1 | hit@3 | MRR | No-answer: any result | No-answer: FP at threshold |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| cairn-bm25f | 95% | 100% | 0.97 | 70% | 20% |
-| bm25-flat | 88% | 100% | 0.94 | 70% | 20% |
+| cairn-bm25f | 98% | 100% | 0.99 | 70% | 20% |
+| bm25-flat | 95% | 100% | 0.97 | 70% | 20% |
 | substring | 90% | 100% | 0.95 | 70% | 10% |
 
 hit@3 by query kind:
@@ -100,26 +104,87 @@ hit@3 by query kind:
   apart. The likely reason is that one author wrote both the entries and the queries, so
   even the "paraphrases" share words with the bodies. This is the biggest limitation of the
   set, and the reason the CI gate is a regression floor, not a claim of quality.
-- **Field weighting helps at rank 1.** cairn misses rank 1 on 2 queries, flat BM25 on 5,
-  substring on 4. Flat BM25 loses `SQLite WAL mode concurrency` to the
-  `database is locked` issue, and `find which commit broke the build` to the release skill;
-  the title weight fixes both.
-- **cairn loses on false positives.** With no threshold, every retriever returns something
-  for 7 of 10 unanswerable queries. At the calibrated threshold cairn still lets 2 through
-  (`rust borrow checker: cannot borrow as mutable` reaches the mutable-defaults fact via
-  `mutable`, `configure vim to indent with spaces` reaches the Makefile tabs issue);
-  substring lets 1 through. The shipped recall hook (`cairn recall`) uses a fixed floor of
-  `min_score = 1.5`. On this set that floor keeps every correct top-1 hit (95% of answerable
-  queries) but lets **5 of 10** no-answer queries through, against 2 of 10 at the calibrated
-  threshold (2.70). Raising the floor is worth testing; the trade-off shows in
-  `recall_floor` in `evals/results/retrieval.json`.
-- **`[[links]]` leak terms into the linking entry.** `rotate a leaked secret` ranks the
-  `.gitignore` issue first because its body links `[[rotate-a-leaked-secret]]` and the link
-  id is tokenized as body text. Excluding link ids from the body field is a cheap fix to
-  evaluate next.
+- **Field weighting helps at rank 1, a little.** cairn misses rank 1 on 1 query, flat BM25
+  on 2, substring on 4. Flat BM25 loses `find which commit broke the build` to the release
+  skill; the title weight fixes it. Before the link fix the gap was larger (2 vs 5).
+- **cairn still loses on false positives at the calibrated threshold.** With no threshold,
+  every retriever returns something for 7 of 10 unanswerable queries. At the calibrated
+  threshold cairn lets 2 through (`rust borrow checker: cannot borrow as mutable` reaches the
+  mutable-defaults fact via `mutable` and `once`, `configure vim to indent with spaces`
+  reaches the Makefile tabs issue via `indent` and `spaces`); substring lets 1 through.
+- **The shipped recall gate is now the stricter operating point.** `cairn recall` returns
+  nothing for 8 of 10 no-answer queries (the same 2 as above get through) and puts a correct
+  entry first for 37 of 40 answerable ones. See the next section for what changed and what
+  it cost.
 - **Near-identical error messages stay hard.** `#!/bin/bash: No such file or directory`
   (a BOM problem) ranks the CRLF issue first for all three retrievers; the two entries share
   most of their vocabulary.
+
+### Changes after the first run
+
+The first published run found two gaps. Both were fixed without touching the queries, the
+labels or the eval brain.
+
+**1. `[[link]]` ids leaked into the index.** `rotate a leaked secret` ranked the `.gitignore`
+issue first because its body says `follow [[rotate-a-leaked-secret]]`, and the id was
+tokenized as body text. Search now indexes the body with link ids removed (`[[id|label]]`
+keeps its label, since that is prose the author wrote into the sentence; code spans and
+fences are untouched). The `links` graph, `outgoing_links()` and `cairn lint` are unchanged.
+Link targets' titles are not indexed in their place: a `See [[x]]` line says where to read
+next, not what the entry is about, and the target's title would carry the same words as its
+id, so it would re-create the leak.
+
+**2. Recall had no real no-answer gate.** The hook kept any hit scoring 1.5 or more, which let
+5 of 10 no-answer queries through. Recall now also requires each hit to share at least two
+distinct query words (`min_terms = 2`; all of them for a one-word query). The rule, and why it
+is not a threshold fitted to these 50 queries:
+
+- It has no fitted parameter. "At least two pieces of evidence" is the smallest rule that is
+  stricter than "any one word", and it mirrors the BM25 fallback of the hot-issues board,
+  which requires three shared words (see [hot-issues.md](hot-issues.md)). The
+  score floor stays at 1.5, as shipped before this eval existed.
+- It targets the failure mode the eval showed. BM25 gives a single rare word a high score on
+  its own; that is how `terraform state lock could not be acquired` reached an npm
+  lockfile issue through `lock`, and `java heap space` reached the Makefile tabs issue through
+  `space`.
+- An IDF-share rule (the share of the query's IDF mass the hit covers, as the hot-issues
+  board uses for confidence) was considered first and rejected: correct top hits for
+  paraphrases and for the agent task prompts cover as little as 15-25% of the query, which
+  overlaps the no-answer queries (9-50%), so no share separates them.
+
+The rule was designed after looking at per-query results, so it is not a blind test. Two
+checks against overfitting: it is stable across an odd/even split of the queries, and the
+neighbouring values show a smooth trade-off rather than a lucky point.
+
+| `min_terms` | Correct first, answerable (40) | No-answer with any result (10) | Odd ids: kept / FP | Even ids: kept / FP |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 (old behavior, after the link fix) | 39 (98%) | 5 (50%) | 95% / 40% | 100% / 60% |
+| **2 (shipped)** | **37 (92%)** | **2 (20%)** | 95% / 20% | 90% / 20% |
+| 3 | 33 (82%) | 0 (0%) | 85% / 0% | 80% / 0% |
+
+`3` would remove every false positive here, but it drops 6 answerable queries, including
+two-word vague prompts that are the normal shape of a recall query. `2` is the shipped
+default; `--min-terms` on `cairn recall` changes it.
+
+**Before and after.** "No-answer FP" is at each retriever's calibrated threshold; the last
+row is the shipped recall hook.
+
+| Retriever | hit@1 | hit@3 | MRR | No-answer FP |
+| --- | ---: | ---: | ---: | ---: |
+| cairn BM25F | 95% -> 98% | 100% -> 100% | 0.97 -> 0.99 | 20% -> 20% |
+| BM25, no field weights | 88% -> 95% | 100% -> 100% | 0.94 -> 0.97 | 20% -> 20% |
+| Substring match | 90% -> 90% | 100% -> 100% | 0.95 -> 0.95 | 10% -> 10% |
+| cairn recall hook (correct first / FP) | 95% -> 92% | | | 50% -> 20% |
+
+What improved: the link fix moves one query (`rotate a leaked secret`) to rank 1 for cairn,
+and three for flat BM25, which shares the index code (among them `SQLite WAL mode
+concurrency`, which the `database is locked` issue won through its link). The recall gate cuts the hook's
+no-answer false positives from 5 of 10 to 2 of 10. What did not: hit@3 was already at the
+ceiling; at the calibrated threshold cairn still has twice substring's false-positive rate
+(the 2 survivors share two real words with an unrelated entry, which no lexical gate can
+catch); and the gate costs 2 answerable queries (`big numeric ids get corrupted in the browser
+frontend`, `money rounding`) where only one query word appears in the right entry, so recall
+now stays silent on them. All 13 agent task prompts still recall a relevant entry in the top 3.
 
 ### Regression gate
 
@@ -174,9 +239,10 @@ to fail and the reference to pass, so a checker cannot silently accept everythin
 For each task and repeat the harness runs two arms in fresh repositories:
 
 - **`brain`**: the hits of `cairn.recall.recall` for the task prompt (the recall hook's
-  selection: top 3, score floor 1.5) are prepended to the prompt. Unlike the hook, which
-  injects pointers (id, title, snippet, path), the harness inlines the full bodies, because
-  the brain is not inside the throwaway repository. A retrieval miss is a miss here too.
+  selection: top 3, score floor 1.5, two shared words) are prepended to the prompt. Unlike
+  the hook, which injects pointers (id, title, snippet, path), the harness inlines the full
+  bodies, because the brain is not inside the throwaway repository. A retrieval miss is a
+  miss here too.
 - **`none`**: the bare prompt.
 
 Runners:
@@ -238,7 +304,8 @@ with the model, the Claude Code version and the date in the PR description.
   capture over months. Ranking gets harder as near-duplicates accumulate.
 - **Threshold calibration.** The no-answer threshold is calibrated on the same answerable
   queries it is reported with. It is a fair cross-retriever comparison, not a tuned
-  production setting.
+  production setting. The recall gate is not calibrated, but it was chosen after seeing
+  these queries (see "Changes after the first run").
 - **Agent A/B.** Tasks are small, the pitfalls are well known, and a strong model may solve
   most of them without help, which would hide the brain's effect. Model output varies run to
   run, so use several repeats and report spread, not one run. Checkers can only see the final

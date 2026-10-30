@@ -110,5 +110,17 @@ def test_lint_exit_codes(tmp_path, capsys):
     assert run(capsys, "lint", "--brain", str(root))[0] == 1
 
 
+def test_search_gate_is_opt_in(capsys):
+    root = str(EXAMPLE_BRAIN)
+    code, out, _ = run(capsys, "search", "helm chart sqlite backup", "--json", "--brain", root)
+    assert [r["id"] for r in json.loads(out)["results"]] == ["sqlite-wal-mode-concurrency"]
+    code, out, _ = run(
+        capsys, "search", "helm", "chart", "sqlite", "backup", "--gate", "--brain", root
+    )
+    assert (code, out) == (0, "no matches\n")
+    code, out, _ = run(capsys, "search", "windows glob", "--gate", "--brain", root)
+    assert "ripgrep-glob-on-windows" in out
+
+
 def test_example_index_is_current(capsys):
     assert run(capsys, "index", "--check", "--brain", str(EXAMPLE_BRAIN))[0] == 0

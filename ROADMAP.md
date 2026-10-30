@@ -51,8 +51,9 @@ One brain, rendered into each tool's native format. Generated files are never ed
 - [ ] Real agent A/B results with Claude Code (needs an API budget)
 - [ ] Runners for Codex, Copilot and Cursor
 - [ ] A held-out query set written by someone who has not read the eval brain
-- [ ] Retrieval follow-ups the eval found: raise the recall floor (1.5 lets 5 of 10
-  no-answer queries through), and stop indexing `[[link]]` ids as body text
+- [x] Retrieval follow-ups the eval found: a no-answer gate for recall (at least two shared
+  words; no-answer false positives 5 of 10 -> 2 of 10), and `[[link]]` ids are no longer
+  indexed as body text
 - [ ] Published results in the README, regenerated in CI on a schedule
 
 ## Later / optional

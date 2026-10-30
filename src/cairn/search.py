@@ -14,7 +14,7 @@ from collections import Counter
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 
-from .model import Entry
+from .model import Entry, strip_links
 
 FIELD_WEIGHTS = {"title": 3.0, "tags": 2.0, "body": 1.0}
 K1 = 1.2
@@ -49,6 +49,8 @@ class Hit:
     entry: Entry
     score: float
     snippet: str
+    # Distinct query terms found in the entry: the evidence behind ``score``.
+    matched: int = 0
 
 
 class Index:
@@ -63,7 +65,7 @@ class Index:
             fields = {
                 "title": Counter(tokenize(entry.title)),
                 "tags": Counter(tokenize(" ".join(entry.tags))),
-                "body": Counter(tokenize(entry.body)),
+                "body": Counter(tokenize(strip_links(entry.body))),
             }
             self._fields.append(fields)
             self._lengths.append({name: sum(c.values()) for name, c in fields.items()})
@@ -74,6 +76,10 @@ class Index:
             name: (sum(lengths[name] for lengths in self._lengths) / n if n else 0.0) or 1.0
             for name in FIELD_WEIGHTS
         }
+
+    def matched(self, i: int, terms: Sequence[str]) -> int:
+        """How many of ``terms`` occur in entry ``i``, in any field."""
+        return sum(any(field[term] for field in self._fields[i].values()) for term in terms)
 
     def score(self, i: int, terms: Sequence[str]) -> float:
         fields, lengths = self._fields[i], self._lengths[i]
@@ -96,8 +102,19 @@ class Index:
         type: str | None = None,
         limit: int | None = 10,
         include_archived: bool = False,
+        min_score: float = 0.0,
+        min_terms: int = 1,
     ) -> list[Hit]:
+        """Ranked hits for ``query``, best first, ties broken by id.
+
+        ``min_score`` and ``min_terms`` form the no-answer gate: a hit must score at least
+        ``min_score`` and share at least ``min_terms`` distinct terms with the query (all of
+        them if the query is shorter). BM25 rewards one rare word on its own, which is how an
+        unanswerable query reaches an unrelated entry; a second matching word is much harder
+        to get by chance. The defaults keep every hit with a positive score.
+        """
         terms = list(dict.fromkeys(tokenize(query)))
+        need = min(min_terms, len(terms))
         hits = []
         for i, entry in enumerate(self.entries):
             if type and entry.type != type:
@@ -105,8 +122,11 @@ class Index:
             if entry.status == "archived" and not include_archived:
                 continue
             score = self.score(i, terms)
-            if score > 0:
-                hits.append(Hit(entry, score, snippet(entry, terms)))
+            if score <= 0 or score < min_score:
+                continue
+            matched = self.matched(i, terms)
+            if matched >= need:
+                hits.append(Hit(entry, score, snippet(entry, terms), matched))
         hits.sort(key=lambda h: (-h.score, h.entry.id))
         return hits if limit is None else hits[:limit]
 

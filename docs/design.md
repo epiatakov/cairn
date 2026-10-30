@@ -141,8 +141,12 @@ it, so the files can be committed, and absolute otherwise.
 ## Recall
 
 `cairn recall` is `search` tuned for injection into a prompt: at most 3 hits, each scoring at
-least 1.5, shown as id, title, best snippet line and path. On the example brain a matching
-issue scores about 4 and unrelated entries stay under about 1.3. Prompts are cut at 2,000
+least 1.5 and sharing at least two distinct words with the prompt (all of them for a one-word
+prompt), shown as id, title, best snippet line and path. On the example brain a matching
+issue scores about 4 and unrelated entries stay under about 1.3. The shared-words rule is the
+no-answer gate: BM25 lets one rare word score high on its own, which is how an unanswerable
+prompt reaches an unrelated entry (see [evals.md](evals.md)). `cairn search --gate` applies
+the same gate. Prompts are cut at 2,000
 characters, since pasted logs add noise faster than signal.
 
 It skips trivial prompts: fewer than two content words after stopwords, or only chit-chat words

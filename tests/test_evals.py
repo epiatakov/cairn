@@ -17,12 +17,13 @@ from evals.retrieval import (
     KINDS,
     CairnBM25F,
     FlatBM25,
+    Query,
     Substring,
     calibrate_threshold,
     evaluate,
     first_rank,
     load_queries,
-    recall_floor,
+    recall_gate,
     run,
 )
 from evals.retrieval import render_markdown as render_retrieval
@@ -75,15 +76,18 @@ def test_evaluate_scores_a_toy_retriever():
     assert m["none_fp_at_threshold"] == 0.0  # no correct top-1 hit, so the threshold is inf
 
 
-def test_recall_floor_counts_hits_at_the_hook_threshold():
-    per_query = [
-        {"kind": "exact", "rank": 1, "top": [["a", 2.0]]},
-        {"kind": "exact", "rank": 1, "top": [["a", 1.0]]},
-        {"kind": "none", "rank": None, "top": [["b", 1.6]]},
-        {"kind": "none", "rank": None, "top": []},
+def test_recall_gate_measures_shipped_recall(eval_brain):
+    queries = [
+        Query("1", "exact", "sqlite database is locked", ("sqlite-database-is-locked",)),
+        Query("2", "exact", "sqlite database is locked", ("python-mutable-default-arguments",)),
+        Query("3", "none", "terraform state lock could not be acquired", ()),
+        Query("4", "none", "zzzz qqqq", ()),
     ]
-    floor = recall_floor({"per_query": per_query}, min_score=1.5)
-    assert floor == {"min_score": 1.5, "kept": 0.5, "none_fp": 0.5}
+    gate = recall_gate(eval_brain, queries, min_score=1.5, min_terms=2)
+    assert (gate["kept"], gate["none_fp"]) == (0.5, 0.0)
+    assert (gate["none_fp_ids"], gate["dropped_ids"]) == ([], [])
+    # Without the shared-words gate, "lock" alone carries the no-answer query through.
+    assert recall_gate(eval_brain, queries, min_score=1.5, min_terms=1)["none_fp_ids"] == ["3"]
 
 
 def test_baselines_rank_sensible_entries(eval_brain):

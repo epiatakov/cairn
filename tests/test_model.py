@@ -1,6 +1,6 @@
 import pytest
 
-from cairn.model import Entry, EntryError, body_links, normalize_tags, slugify
+from cairn.model import Entry, EntryError, body_links, normalize_tags, slugify, strip_links
 
 VALID = """---
 id: sample
@@ -59,6 +59,13 @@ def test_body_links_ignore_code_and_support_labels():
 ```
 """
     assert body_links(body) == ["alpha", "beta"]
+
+
+def test_strip_links_keeps_labels_and_code():
+    body = "See [[alpha]] and [[beta|the beta entry]].\n`[[kept]]` and [[ -f x ]]\n"
+    assert strip_links(body) == "See  and the beta entry.\n`[[kept]]` and [[ -f x ]]\n"
+    fenced = "```\n[[gamma]]\n```\nthen [[delta]]"
+    assert strip_links(fenced) == "```\n[[gamma]]\n```\nthen "
 
 
 @pytest.mark.parametrize(

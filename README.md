@@ -87,9 +87,10 @@ Relevant entries from the cairn brain (read the file, or `cairn show <id>`):
 ```
 
 It stays silent on chit-chat ("thanks", "go ahead") and prompts with fewer than two content
-words, and when nothing scores at least 1.5. Tune it with `--min-words N` (0 turns the filter
-off), `--min-score S` and `--limit N` on the hook command. On any error (no brain, bad input,
-a bug) it prints nothing and exits 0, so it never blocks a prompt. Try it by hand:
+words, and when no entry passes the no-answer gate: a score of at least 1.5 and at least two
+distinct words shared with the prompt. Tune it with `--min-words N` (0 turns the filter off),
+`--min-score S`, `--min-terms N` and `--limit N` on the hook command. On any error (no brain,
+bad input, a bug) it prints nothing and exits 0, so it never blocks a prompt. Try it by hand:
 
 ```bash
 cairn recall "rg glob fails on windows" --brain examples/brain
@@ -134,12 +135,12 @@ links: [powershell-strips-quotes-in-native-arguments]
 | --- | --- |
 | `cairn init` | Create the folder layout and a README inside the brain |
 | `cairn add <type> --title ... [--tags a,b] [--body TEXT \| --body - \| --body-file F]` | Add an entry with a slug id. Refuses near-duplicates (lists their ids) unless `--force` |
-| `cairn search <query> [--type T] [--limit N] [--json]` | BM25 search over title (weighted highest), tags and body. Skips archived entries |
+| `cairn search <query> [--type T] [--limit N] [--gate] [--json]` | BM25 search over title (weighted highest), tags and body. Skips archived entries. `--gate` applies recall's no-answer gate |
 | `cairn show <id> [--json]` | Print one entry |
 | `cairn list [--type T] [--status S] [--json]` | List entries |
 | `cairn lint [--strict]` | Report invalid frontmatter, duplicate ids, broken links (errors) and near-duplicates (warnings). Exits non-zero on errors |
 | `cairn index [--check]` | Regenerate `INDEX.md`, or check that it is current |
-| `cairn recall <prompt> [--limit N] [--min-score S] [--min-words N] [--format text\|json\|claude-hook]` | A few high-precision pointers for a task. Skips trivial prompts. `claude-hook` reads hook JSON on stdin and never fails |
+| `cairn recall <prompt> [--limit N] [--min-score S] [--min-terms N] [--min-words N] [--format text\|json\|claude-hook]` | A few high-precision pointers for a task. Skips trivial prompts. `claude-hook` reads hook JSON on stdin and never fails |
 | `cairn install <tool> [--project DIR] [--dry-run]` | Wire cairn into `claude`, `codex`, `copilot` or `cursor`. Idempotent |
 | `cairn uninstall <tool> [--project DIR] [--dry-run]` | Remove exactly what `install` added |
 | `cairn skills export\|clean --tool claude\|cursor [--project DIR] [--dry-run]` | Sync brain skills into the tool's folder, or remove the exported ones |
@@ -199,20 +200,25 @@ right answer) against a 42-entry eval brain. cairn's BM25F is compared with the 
 without field weights, and with grep-style substring matching. Method, dataset and caveats:
 [docs/evals.md](docs/evals.md). Reproduce with `python -m evals.retrieval`.
 
-| Retriever | hit@1 | hit@3 | MRR | No-answer: any result | No-answer: FP at threshold |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| cairn BM25F | 95% | 100% | 0.97 | 70% | 20% |
-| BM25, no field weights | 88% | 100% | 0.94 | 70% | 20% |
-| Substring match | 90% | 100% | 0.95 | 70% | 10% |
+Before and after the two fixes the first run called for (search no longer indexes
+`[[link]]` ids; recall gained a no-answer gate). "No-answer FP" is at each retriever's
+calibrated threshold; the last row is the shipped recall hook.
+
+| Retriever | hit@1 | hit@3 | MRR | No-answer FP |
+| --- | ---: | ---: | ---: | ---: |
+| cairn BM25F | 95% -> 98% | 100% -> 100% | 0.97 -> 0.99 | 20% -> 20% |
+| BM25, no field weights | 88% -> 95% | 100% -> 100% | 0.94 -> 0.97 | 20% -> 20% |
+| Substring match | 90% -> 90% | 100% -> 100% | 0.95 -> 0.95 | 10% -> 10% |
+| cairn recall hook (correct first / FP) | 95% -> 92% | | | 50% -> 20% |
 
 What this does and does not show:
 
-- Field weighting wins at rank 1 (2 misses vs 5 and 4). hit@3 is at the ceiling for all three,
-  so the set is too easy to separate them there: one author wrote both entries and queries.
-- cairn does **not** win on unanswerable queries. Without a threshold, all three return
-  something for 7 of 10; at a calibrated threshold, substring matching has fewer false
-  positives. The recall hook's shipped floor (`min_score` 1.5) keeps every correct top-1 hit
-  but lets 5 of 10 unanswerable queries through; a calibrated floor (2.70) lets 2 through.
+- The recall hook now stays silent on 8 of 10 unanswerable queries (was 5 of 10), at the cost
+  of 2 of 40 answerable ones where only one query word is in the right entry. At a calibrated
+  threshold cairn still has more false positives than substring matching (2 vs 1).
+- Field weighting wins at rank 1 (1 miss vs 2 and 4), by less than before the link fix
+  (which helped flat BM25 too). hit@3 is at the ceiling for all three, so the set is too easy
+  to separate them there: one author wrote both entries and queries.
 - CI fails if cairn's hit@3 drops below the recorded baseline.
 
 ### Agent A/B
