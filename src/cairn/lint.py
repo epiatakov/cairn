@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from . import dedupe
+from . import dedupe, issues
 from .brain import Brain, Problem
 from .model import SKILL_FILE, TYPE_DIRS
 
@@ -55,6 +55,27 @@ def lint(brain: Brain, *, threshold: float = dedupe.THRESHOLD) -> list[Problem]:
                 problems.append(
                     Problem(entry.path, "error", "broken-link", f"link to unknown id '{target}'")
                 )
+
+    by_fingerprint = defaultdict(list)
+    for entry in entries:
+        if entry.type != "issue":
+            continue
+        for message in issues.check_fields(entry):
+            problems.append(Problem(entry.path, "error", "invalid-issue", message))
+        if entry.status != "archived":
+            for fp in dict.fromkeys(issues.fingerprints(entry)):
+                by_fingerprint[fp].append(entry)
+    for fp, group in by_fingerprint.items():
+        if len(group) > 1:
+            ids = ", ".join(e.id for e in group)
+            problems.append(
+                Problem(
+                    group[0].path,
+                    "warning",
+                    "duplicate-fingerprint",
+                    f"fingerprint {fp} is on several issues ({ids}); merge them",
+                )
+            )
 
     live = [e for e in entries if e.status != "archived"]
     for a, b, sim in dedupe.near_duplicate_pairs(live, threshold):

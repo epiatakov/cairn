@@ -1,8 +1,8 @@
 # Design
 
 This document covers the v0.1 core: the data model, retrieval, deduplication and linting.
-Planned pieces (adapters, hooks, hot-issues board, eval harness) are described only where they
-shape today's decisions.
+The hot-issues board has its own document, [hot-issues.md](hot-issues.md). Planned pieces
+(adapters, hooks, eval harness) are described only where they shape today's decisions.
 
 ## Data model
 
@@ -25,8 +25,8 @@ Unknown keys are preserved, so adapters can attach their own metadata without sc
 - `fact`: a durable truth about a tool, system or codebase.
 - `skill`: a procedure. It lives at `skills/<id>/SKILL.md`, following the public skills-folder
   pattern, so scripts or references can sit next to it and adapters can export the folder whole.
-- `issue`: a known failure with symptom, cause and workaround. This is the raw material for the
-  hot-issues board.
+- `issue`: a known failure with symptom, cause and workaround. Optional extra fields
+  (`fingerprint`, `occurrences`, `state`, ...) put it on the hot-issues board.
 - `note`: anything else worth keeping.
 
 **Status** replaces deletion. `stale` entries still show up in search, flagged, because old
@@ -96,15 +96,17 @@ missed duplicate, which lint and review can still catch.
 | error | `duplicate-id` | Two files share an id |
 | error | `broken-link` | `links:` or a body `[[id]]` points to an unknown id |
 | error | `wrong-folder` | The `type` does not match the folder the file is in |
+| error | `invalid-issue` | A hot-issues field (`fingerprint`, `state`, `occurrences`, dates) is invalid |
 | warning | `id-mismatch` | The id differs from the file name (or skill folder name) |
 | warning | `near-duplicate` | Two live entries are above the similarity threshold |
+| warning | `duplicate-fingerprint` | Two live issues share an error fingerprint |
 
 `[[...]]` inside code spans and fenced blocks is ignored, so a shell test such as
 `[[ -f x ]]` is never treated as a link.
 
 ## Machine interface
 
-`--json` output on `search`, `show` and `list` is a contract for hooks and adapters. Every
+`--json` output on `search`, `show`, `list` and the `issue` commands is a contract for hooks and adapters. Every
 payload carries `"version": 1`. Fields may be added, but changing or removing one requires a
 version bump. Paths are relative to the brain and always use `/`.
 

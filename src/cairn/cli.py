@@ -83,6 +83,10 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("index", parents=[common], help=f"regenerate {INDEX_FILE}")
     p.add_argument("--check", action="store_true", help=f"fail if {INDEX_FILE} is out of date")
     p.set_defaults(func=cmd_index)
+
+    from .issue_cli import register as register_issue_commands  # imports cli; keep it lazy
+
+    register_issue_commands(sub, common)
     return parser
 
 

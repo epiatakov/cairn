@@ -8,8 +8,8 @@ cairn is a plain-Markdown knowledge store plus the plumbing that makes coding ag
 (Claude Code, Codex, GitHub Copilot, Cursor) **recall** relevant knowledge before they work
 and **capture** durable facts after they work, all from one shared source of truth.
 
-> **Status: early.** The knowledge store and the `cairn` CLI work today. Tool adapters, hooks,
-> the hot-issues board and the eval harness are planned; see [ROADMAP.md](ROADMAP.md).
+> **Status: early.** The knowledge store, the `cairn` CLI and the hot-issues board work today.
+> Tool adapters, recall/capture hooks and the eval harness are planned; see [ROADMAP.md](ROADMAP.md).
 > Items below are marked _(planned)_ until they ship.
 
 ## Why another memory tool?
@@ -23,7 +23,8 @@ three things they don't combine:
 2. **Enforced process, not hopeful prompting.** Hooks gate the work: a _recall gate_ searches
    the brain before a task starts, a _capture gate_ asks for durable facts when a substantive
    task ends, and a _hot-issues board_ lists known tool failures with their workarounds.
-   _(Planned. Issue entries and the stable `search --json` output the hooks will use are built.)_
+   _(The hot-issues board and its Claude Code hook mode are built; the recall and capture gates
+   are planned.)_
 3. **Measured value.** An A/B eval harness runs the same tasks with and without the brain and
    reports the difference, so "it helps" is a number, not a feeling. _(Planned.)_
 
@@ -88,6 +89,11 @@ links: [powershell-strips-quotes-in-native-arguments]
 | `cairn list [--type T] [--status S] [--json]` | List entries |
 | `cairn lint [--strict]` | Report invalid frontmatter, duplicate ids, broken links (errors) and near-duplicates (warnings). Exits non-zero on errors |
 | `cairn index [--check]` | Regenerate `INDEX.md`, or check that it is current |
+| `cairn issue record --tool T --error TEXT\|-` | Record a tool failure: a new issue, or +1 on the known one |
+| `cairn issue match --error TEXT\|- [--json]` | The known issue and workaround for an error, if any |
+| `cairn issue list [--since 7d] [--state S] [--tool T]` | The hot-issues board, ranked by recent occurrences |
+| `cairn issue resolve <id> --workaround W \| --fix F` | Attach a workaround or a root-cause fix |
+| `cairn issue prune --older-than 30d` | Mark issues that stopped recurring as stale |
 
 Every command accepts `--brain DIR`. Without it, cairn uses `$CAIRN_BRAIN`, then `./brain`.
 
@@ -100,6 +106,22 @@ brain = Brain.open("examples/brain")
 for hit in brain.search("windows glob", limit=3):
     print(hit.entry.id, round(hit.score, 2), hit.snippet)
 ```
+
+## Hot-issues board
+
+Agents keep hitting the same tool failures. The board records each one once, fingerprinted so
+the same error on another machine or path still matches, and hands back the workaround the next
+time it happens:
+
+```bash
+cairn issue match --brain examples/brain \
+  --error "rg: C:\proj\src\*: The filename, directory name, or volume label syntax is incorrect"
+cairn issue list --brain examples/brain     # hottest first
+```
+
+`cairn issue match --format claude-hook` plugs into a Claude Code `PostToolUse` hook and injects
+the workaround after a failed tool call; it stays silent otherwise. Lifecycle, fingerprinting and
+the hook contract are in [docs/hot-issues.md](docs/hot-issues.md).
 
 ## Design principles
 

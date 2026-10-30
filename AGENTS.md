@@ -36,9 +36,12 @@ cairn index --brain examples/brain # regenerate examples/brain/INDEX.md after ed
 | `src/cairn/search.py` | Tokenizer and BM25F index |
 | `src/cairn/dedupe.py` | Shingle-Jaccard near-duplicate detection |
 | `src/cairn/lint.py` | Brain consistency checks |
+| `src/cairn/issues.py` | Hot-issues board: fingerprints, matching, record/resolve/prune |
+| `src/cairn/issue_cli.py` | `cairn issue ...` subcommands and the Claude Code hook mode |
 | `src/cairn/cli.py` | argparse CLI; keep logic in the modules above |
 | `examples/brain/` | Example brain used by docs and tests |
 | `docs/design.md` | Data model and design decisions |
+| `docs/hot-issues.md` | Hot-issues board: fingerprints, lifecycle, hook |
 
 ## Conventions
 
