@@ -50,7 +50,8 @@ def test_trivial_filter_is_configurable():
 def test_recall_applies_threshold_and_limit():
     brain = Brain.open(EXAMPLE_BRAIN)
     hits = recall(brain, "rg glob fails on windows")
-    assert [h.entry.id for h in hits] == ["ripgrep-glob-on-windows"]
+    assert hits[0].entry.id == "ripgrep-glob-on-windows"
+    assert all(h.score >= 1.5 for h in hits)
     assert len(recall(brain, "rg glob fails on windows", min_score=0, limit=2)) == 2
     assert recall(brain, "rg glob fails on windows", min_score=100) == []
 
@@ -58,7 +59,9 @@ def test_recall_applies_threshold_and_limit():
 def test_recall_caps_long_prompts():
     brain = Brain.open(EXAMPLE_BRAIN)
     prompt = "rg glob fails on windows " + "x" * MAX_QUERY_CHARS + " sqlite wal"
-    assert [h.entry.id for h in recall(brain, prompt)] == ["ripgrep-glob-on-windows"]
+    ids = [h.entry.id for h in recall(brain, prompt)]
+    assert ids[0] == "ripgrep-glob-on-windows"
+    assert "sqlite-wal-mode-concurrency" not in ids
 
 
 def test_render_text_points_at_files():

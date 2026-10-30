@@ -31,9 +31,15 @@ One brain, rendered into each tool's native format. Generated files are never ed
 
 ## Hot-issues board
 
-- [ ] `cairn issues`: active `issue` entries ranked by recency and hit count
-- [ ] Inject matching hot issues when a tool error appears (for example, a failing command)
-- [ ] Mark issues `stale` automatically when the workaround stops being used
+- [x] `cairn issue record|match|list|resolve|prune`: issues fingerprinted, counted and ranked by
+  a recency-weighted hot score (see `docs/hot-issues.md`)
+- [x] Error fingerprints that survive path, number, id and timestamp differences, with a BM25
+  fallback that learns new variants
+- [x] `cairn issue match --format claude-hook`: inject the matching workaround after a failed
+  tool call (silent on no match or any error)
+- [x] `cairn issue prune`: mark issues `stale` when they stop recurring
+- [ ] Record occurrences from the hook itself, so agents don't have to call `record`
+- [ ] Hook output for other agents (Codex, Copilot, Cursor) once their adapters land
 
 ## Eval harness
 

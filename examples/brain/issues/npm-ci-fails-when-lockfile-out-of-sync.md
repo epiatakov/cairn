@@ -6,6 +6,13 @@ tags: [npm, node, ci]
 status: active
 created: 2026-03-05
 updated: 2026-03-05
+tool: npm
+fingerprint: [84bf9461a99e, b360142f2b35]
+state: workaround
+occurrences: 4
+first_seen: 2026-03-05
+last_seen: 2026-09-18
+workaround: Run npm install locally and commit the updated package-lock.json; do not switch CI to npm install.
 ---
 
 **Symptom:** CI fails with "npm ci can only install packages when your package.json and

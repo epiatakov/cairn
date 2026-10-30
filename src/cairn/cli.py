@@ -90,6 +90,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(func=cmd_index)
 
     agents_cli.register(sub, common)
+
+    from .issue_cli import register as register_issue_commands  # imports cli; keep it lazy
+
+    register_issue_commands(sub, common)
     return parser
 
 

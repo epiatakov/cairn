@@ -7,7 +7,7 @@ Canonical instructions for coding agents (and humans) working on this repository
 
 cairn is "one second brain for every coding agent": a plain-Markdown knowledge store
 (`src/cairn/`) plus a CLI, `cairn`, with adapters for Claude Code, Codex, Copilot and Cursor
-and a recall hook. A capture hook, a hot-issues board and an eval harness are planned (see
+a recall hook and a hot-issues board. A capture hook and an eval harness are planned (see
 `ROADMAP.md`).
 
 ## Stack
@@ -37,12 +37,15 @@ cairn index --brain examples/brain # regenerate examples/brain/INDEX.md after ed
 | `src/cairn/search.py` | Tokenizer and BM25F index |
 | `src/cairn/dedupe.py` | Shingle-Jaccard near-duplicate detection |
 | `src/cairn/lint.py` | Brain consistency checks |
+| `src/cairn/issues.py` | Hot-issues board: fingerprints, matching, record/resolve/prune |
+| `src/cairn/issue_cli.py` | `cairn issue ...` subcommands and the Claude Code hook mode |
 | `src/cairn/recall.py` | Recall: trivial-prompt filter, thresholded search, hook output |
 | `src/cairn/adapters/` | One module per tool (`claude`, `codex`, `copilot`, `cursor`) on `base.py` |
 | `src/cairn/agents_cli.py` | `recall`, `install`, `uninstall`, `skills` subcommands |
 | `src/cairn/cli.py` | argparse CLI; keep logic in the modules above |
 | `examples/brain/` | Example brain used by docs and tests |
 | `docs/design.md` | Data model and design decisions |
+| `docs/hot-issues.md` | Hot-issues board: fingerprints, lifecycle, hook |
 
 ## Conventions
 
