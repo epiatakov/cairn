@@ -23,6 +23,7 @@ _DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 _LINK_RE = re.compile(r"\[\[([^\s\[\]|][^\[\]|]*?)(?:\|[^\[\]]*)?\]\]")
 _FENCE_RE = re.compile(r"^(`{3,}|~{3,}).*?^\1[^\n]*$", re.MULTILINE | re.DOTALL)
 _INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
+_CODE_RE = re.compile(f"{_FENCE_RE.pattern}|{_INLINE_CODE_RE.pattern}", re.MULTILINE | re.DOTALL)
 MAX_SLUG_LENGTH = 60
 
 
@@ -150,6 +151,24 @@ def body_links(body: str) -> list[str]:
     """Extract ``[[id]]`` / ``[[id|label]]`` targets, ignoring code spans and fences."""
     text = _INLINE_CODE_RE.sub("", _FENCE_RE.sub("", body))
     return [match.group(1).strip() for match in _LINK_RE.finditer(text)]
+
+
+def strip_links(body: str) -> str:
+    """The body as prose: ``[[id]]`` removed, ``[[id|label]]`` reduced to its label.
+
+    Code spans and fences are kept as written, so ``[[`` in shell snippets is untouched.
+    """
+    out, pos = [], 0
+    for match in _CODE_RE.finditer(body):
+        out += [_LINK_RE.sub(_link_label, body[pos : match.start()]), match.group(0)]
+        pos = match.end()
+    out.append(_LINK_RE.sub(_link_label, body[pos:]))
+    return "".join(out)
+
+
+def _link_label(match: re.Match[str]) -> str:
+    label = match.group(0)[2:-2].partition("|")[2]
+    return label.strip()
 
 
 def slugify(text: str, max_length: int = MAX_SLUG_LENGTH) -> str:

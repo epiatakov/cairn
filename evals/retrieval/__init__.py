@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Protocol
 
 from cairn import Brain, Entry, Index
-from cairn.recall import DEFAULT_MIN_SCORE
+from cairn.recall import DEFAULT_MIN_SCORE, DEFAULT_MIN_TERMS, recall
 from cairn.search import STOPWORDS
 
 from .. import EVAL_BRAIN, EVALS_DIR, RESULTS_DIR
@@ -180,33 +180,46 @@ def run(brain_dir: Path = EVAL_BRAIN, queries_file: Path = QUERIES_FILE) -> dict
     queries = load_queries(queries_file)
     counts = {kind: sum(q.kind == kind for q in queries) for kind in KINDS}
     results = {
-        "version": 1,
+        "version": 2,
         "entries": sum(e.status != "archived" for e in brain.entries),
         "queries": counts,
         "limit": LIMIT,
         "keep": KEEP,
         "retrievers": {r.name: evaluate(r, queries) for r in retrievers(brain)},
     }
-    results["recall_floor"] = recall_floor(results["retrievers"][GATED])
+    results["recall_gate"] = recall_gate(brain, queries)
     return results
 
 
-def recall_floor(cairn: dict, min_score: float = DEFAULT_MIN_SCORE) -> dict:
-    """How cairn's shipped recall hook floor (``cairn.recall``) does on this set.
+def recall_gate(
+    brain: Brain,
+    queries: Sequence[Query],
+    *,
+    min_score: float = DEFAULT_MIN_SCORE,
+    min_terms: int = DEFAULT_MIN_TERMS,
+) -> dict:
+    """How cairn's shipped recall (``cairn.recall.recall``, the hook's selection) does here.
 
-    ``kept`` is the share of answerable queries whose correct top-1 hit clears the floor;
-    ``none_fp`` the share of no-answer queries whose top hit clears it.
+    ``kept`` is the share of answerable queries whose first recalled entry is a correct one;
+    ``none_fp`` the share of no-answer queries for which recall returns anything at all.
+    Unlike the per-retriever threshold, this gate is fixed in code, not fitted to the set.
     """
-    answerable = [p for p in cairn["per_query"] if p["kind"] != "none"]
-    unanswerable = [p for p in cairn["per_query"] if p["kind"] == "none"]
+    first = {
+        q.id: [h.entry.id for h in recall(brain, q.query, min_score=min_score, min_terms=min_terms)]
+        for q in queries
+    }
+    answerable = [q for q in queries if q.kind != "none"]
+    unanswerable = [q for q in queries if q.kind == "none"]
     return {
         "min_score": min_score,
+        "min_terms": min_terms,
         "kept": round(
-            mean([float(p["rank"] == 1 and p["top"][0][1] >= min_score) for p in answerable]), 4
+            mean([float(bool(first[q.id]) and first[q.id][0] in q.expected) for q in answerable]),
+            4,
         ),
-        "none_fp": round(
-            mean([float(bool(p["top"]) and p["top"][0][1] >= min_score) for p in unanswerable]), 4
-        ),
+        "none_fp": round(mean([float(bool(first[q.id])) for q in unanswerable]), 4),
+        "none_fp_ids": [q.id for q in unanswerable if first[q.id]],
+        "dropped_ids": [q.id for q in answerable if not first[q.id]],
     }
 
 
@@ -254,12 +267,13 @@ def render_markdown(results: dict, queries: Sequence[Query]) -> str:
             f"- {p['id']}: `{text[p['id']]}` -> {p['top'][0][0]} ({p['top'][0][1]:.2f})"
             for p in fps
         ] or ["- none"]
-    floor = results.get("recall_floor")
-    if floor:
+    gate = results.get("recall_gate")
+    if gate:
         rows += [
             "",
-            f"At the recall hook's floor (min_score {floor['min_score']}), {GATED} keeps "
-            f"{pct(floor['kept'])} of answerable queries as a correct top-1 hit and lets "
-            f"{pct(floor['none_fp'])} of no-answer queries through.",
+            f"Shipped recall gate (min_score {gate['min_score']}, min_terms "
+            f"{gate['min_terms']}): a correct entry comes first for {pct(gate['kept'])} of "
+            f"answerable queries, and {pct(gate['none_fp'])} of no-answer queries return "
+            "anything.",
         ]
     return "\n".join(rows) + "\n"

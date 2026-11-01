@@ -30,6 +30,14 @@ def register(sub: argparse._SubParsersAction, common: argparse.ArgumentParser) -
         help=f"drop weaker hits (default: {recall_mod.DEFAULT_MIN_SCORE})",
     )
     p.add_argument(
+        "--min-terms",
+        type=int,
+        default=recall_mod.DEFAULT_MIN_TERMS,
+        metavar="N",
+        help="drop hits sharing fewer than N distinct words with the prompt "
+        f"(default: {recall_mod.DEFAULT_MIN_TERMS})",
+    )
+    p.add_argument(
         "--min-words",
         type=int,
         default=recall_mod.DEFAULT_MIN_WORDS,
@@ -114,7 +122,9 @@ def cmd_recall(args: argparse.Namespace) -> int:
 
 
 def _recall(brain: Brain, prompt: str, args: argparse.Namespace) -> list:
-    return recall_mod.recall(brain, prompt, limit=args.limit, min_score=args.min_score)
+    return recall_mod.recall(
+        brain, prompt, limit=args.limit, min_score=args.min_score, min_terms=args.min_terms
+    )
 
 
 def _claude_hook(args: argparse.Namespace) -> None:

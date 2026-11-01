@@ -12,6 +12,11 @@ from .search import Hit, tokenize
 
 DEFAULT_LIMIT = 3
 DEFAULT_MIN_SCORE = 1.5
+# No-answer gate: a pointer must share at least two distinct words with the prompt (all of
+# them for a one-word prompt). One shared word is the usual shape of a false positive, e.g.
+# "terraform state lock could not be acquired" reaching an npm lockfile entry through
+# "lock" alone.
+DEFAULT_MIN_TERMS = 2
 DEFAULT_MIN_WORDS = 2
 # Long prompts (pasted logs, whole files) are cut before searching: every extra term adds
 # noise and scoring cost, and the task is usually stated up front.
@@ -43,10 +48,16 @@ def recall(
     *,
     limit: int = DEFAULT_LIMIT,
     min_score: float = DEFAULT_MIN_SCORE,
+    min_terms: int = DEFAULT_MIN_TERMS,
 ) -> list[Hit]:
-    """The top ``limit`` hits scoring at least ``min_score``. Archived entries are skipped."""
-    hits = brain.search(prompt[:MAX_QUERY_CHARS], limit=limit)
-    return [h for h in hits if h.score >= min_score]
+    """The top ``limit`` hits that pass the no-answer gate. Archived entries are skipped.
+
+    A hit must score at least ``min_score`` and share ``min_terms`` distinct words with the
+    prompt (see :meth:`cairn.search.Index.search`). An empty list means "nothing relevant".
+    """
+    return brain.search(
+        prompt[:MAX_QUERY_CHARS], limit=limit, min_score=min_score, min_terms=min_terms
+    )
 
 
 def render_text(brain: Brain, hits: list[Hit]) -> str:

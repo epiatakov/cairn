@@ -13,6 +13,7 @@ from . import __version__, agents_cli
 from .brain import INDEX_FILE, Brain, CairnError, DuplicateError, resolve_root
 from .lint import lint
 from .model import STATUSES, TYPES, Entry, normalize_tags
+from .recall import DEFAULT_MIN_SCORE, DEFAULT_MIN_TERMS
 
 JSON_SCHEMA_VERSION = 1
 
@@ -67,6 +68,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("query", nargs="+")
     p.add_argument("--type", choices=TYPES)
     p.add_argument("--limit", type=int, default=10)
+    p.add_argument(
+        "--gate",
+        action="store_true",
+        help="apply the recall hook's no-answer gate (min score and shared words), "
+        "so a query with no good answer returns nothing",
+    )
     p.add_argument("--json", action="store_true", help="stable machine-readable output")
     p.set_defaults(func=cmd_search)
 
@@ -163,7 +170,8 @@ def cmd_search(args: argparse.Namespace) -> int:
         raise CairnError("--limit must be at least 1")
     brain = _open(args)
     query = " ".join(args.query)
-    hits = brain.search(query, type=args.type, limit=args.limit)
+    gate = {"min_score": DEFAULT_MIN_SCORE, "min_terms": DEFAULT_MIN_TERMS} if args.gate else {}
+    hits = brain.search(query, type=args.type, limit=args.limit, **gate)
     if args.json:
         results = [
             {**entry_to_dict(brain, h.entry), "score": round(h.score, 4), "snippet": h.snippet}

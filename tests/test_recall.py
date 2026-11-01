@@ -56,6 +56,17 @@ def test_recall_applies_threshold_and_limit():
     assert recall(brain, "rg glob fails on windows", min_score=100) == []
 
 
+def test_recall_needs_two_shared_words():
+    brain = Brain.open(EXAMPLE_BRAIN)
+    # "sqlite" alone clears the score floor; nothing else in the prompt is in the brain.
+    prompt = "helm chart sqlite backup"
+    assert [h.entry.id for h in recall(brain, prompt, min_terms=1)] == [
+        "sqlite-wal-mode-concurrency"
+    ]
+    assert recall(brain, prompt) == []
+    assert all(h.matched >= 2 for h in recall(brain, "rg glob fails on windows"))
+
+
 def test_recall_caps_long_prompts():
     brain = Brain.open(EXAMPLE_BRAIN)
     prompt = "rg glob fails on windows " + "x" * MAX_QUERY_CHARS + " sqlite wal"
@@ -94,6 +105,9 @@ def test_cli_text_and_json(capsys):
     assert run(capsys, "recall", "quantum chromodynamics", "--brain", BRAIN)[1] == (
         "no relevant entries\n"
     )
+    prompt = "helm chart sqlite backup"
+    assert run(capsys, "recall", prompt, "--brain", BRAIN)[1] == "no relevant entries\n"
+    assert "sqlite-wal" in run(capsys, "recall", prompt, "--min-terms", "1", "--brain", BRAIN)[1]
 
 
 def test_cli_errors_outside_hook_mode(capsys, tmp_path):
