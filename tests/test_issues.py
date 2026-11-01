@@ -388,6 +388,53 @@ def test_hook_is_silent_on_no_match_or_any_error(capsys, monkeypatch, payload, b
     assert (code, out, err) == (0, "", "")
 
 
+def test_hook_survives_bad_flags(capsys, monkeypatch):
+    payload = json.dumps({"hook_event_name": "PostToolUseFailure", "error": RG_ERROR})
+    code, out, _ = run(
+        capsys, "issue", "match", "--format", "claude-hook", "--no-such-flag",
+        stdin=payload, monkeypatch=monkeypatch,
+    )  # fmt: skip
+    assert (code, out) == (0, "")
+
+
+def test_hook_resolves_relative_brain_against_payload_cwd(capsys, monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    payload = {
+        "hook_event_name": "PostToolUseFailure",
+        "cwd": str(EXAMPLE_BRAIN.parent),
+        "error": RG_ERROR,
+    }
+    code, out, _ = _hook(capsys, monkeypatch, payload, brain="brain")
+    assert code == 0 and "ripgrep-wildcard-path-on-windows" in out
+
+
+def test_hook_payload_is_read_as_utf8_whatever_the_console_encoding(monkeypatch):
+    from cairn.agents_cli import read_hook_payload
+
+    raw = json.dumps({"prompt": "caf\u00e9 \u2713"}, ensure_ascii=False).encode("utf-8")
+    monkeypatch.setattr("sys.stdin", io.TextIOWrapper(io.BytesIO(raw), encoding="cp1252"))
+    assert read_hook_payload() == {"prompt": "caf\u00e9 \u2713"}
+
+
+def test_record_without_an_ascii_slug_uses_the_fingerprint(brain):
+    rec = record(
+        brain,
+        "\u0443\u0442\u0438\u043b\u0438\u0442\u0430",
+        "\u043e\u0448\u0438\u0431\u043a\u0430: \u0444\u0430\u0439\u043b",
+        today=TODAY,
+    )
+    assert rec.created and rec.entry.id == f"issue-{rec.fingerprint}"
+    assert (
+        record(
+            brain,
+            "x",
+            "\u043e\u0448\u0438\u0431\u043a\u0430: \u0444\u0430\u0439\u043b",
+            today=TODAY,
+        ).created
+        is False
+    )
+
+
 def test_example_issues_match_their_documented_errors():
     brain = Brain.open(EXAMPLE_BRAIN)
     cases = {

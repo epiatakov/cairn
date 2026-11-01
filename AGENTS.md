@@ -27,6 +27,7 @@ cairn lint --brain examples/brain  # the example brain must stay clean
 cairn index --brain examples/brain # regenerate examples/brain/INDEX.md after editing examples
 python -m evals.retrieval          # retrieval eval; commit evals/results/retrieval.json if it changes
 python -m evals.agent --runner mock  # agent harness self-test
+python -m build                    # sdist and wheel; CI installs the wheel and runs it
 ```
 
 ## Layout
@@ -65,8 +66,8 @@ python -m evals.agent --runner mock  # agent harness self-test
   failures.
 - Read and write files as UTF-8 with LF line endings. CLI output stays ASCII.
 - Type hints on public functions; docstrings where the why isn't obvious.
-- Update `README.md` and `ROADMAP.md` when a planned item ships. Never describe planned work as
-  built.
+- Update `README.md`, `ROADMAP.md` and `CHANGELOG.md` when a planned item ships. Never describe
+  planned work as built.
 
 ## Clean-room rule
 

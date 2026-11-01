@@ -110,7 +110,11 @@ code, or error-looking `stderr`) and the error matches a known issue, it prints:
 ```
 
 On no match, a successful tool call, unparsable input, a missing brain or any other error, it
-prints nothing and exits 0. A hook must never break the agent's turn. Example settings:
+prints nothing and exits 0. A hook must never break the agent's turn. A relative `--brain`
+(or the default `./brain`) is resolved against the `cwd` in the payload.
+
+`cairn install claude` does not add this hook yet (it is on the roadmap), so add it to
+`.claude/settings.json` by hand, next to the recall hook that `install` writes:
 
 ```json
 {
@@ -124,8 +128,6 @@ prints nothing and exits 0. A hook must never break the agent's turn. Example se
   }
 }
 ```
-
-Installing this wiring automatically belongs to the adapters (`cairn install`), not to the board.
 
 ## Design note: a cache of fixes, not a log
 

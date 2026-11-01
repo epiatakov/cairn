@@ -14,6 +14,7 @@ from .brain import INDEX_FILE, Brain, CairnError, DuplicateError, resolve_root
 from .lint import lint
 from .model import STATUSES, TYPES, Entry, normalize_tags
 from .recall import DEFAULT_MIN_SCORE, DEFAULT_MIN_TERMS
+from .search import Hit
 
 JSON_SCHEMA_VERSION = 1
 
@@ -108,7 +109,8 @@ def _open(args: argparse.Namespace) -> Brain:
     return Brain.open(resolve_root(args.brain))
 
 
-def _emit_json(payload: dict) -> None:
+def emit_json(payload: dict) -> None:
+    """Print a ``--json`` payload. Every one carries ``version``; see ``JSON_SCHEMA_VERSION``."""
     print(json.dumps({"version": JSON_SCHEMA_VERSION, **payload}, indent=2))
 
 
@@ -127,6 +129,11 @@ def entry_to_dict(brain: Brain, entry: Entry, *, body: bool = False) -> dict:
     if body:
         data["body"] = entry.body
     return data
+
+
+def hit_to_dict(brain: Brain, hit: Hit) -> dict:
+    """One search or recall result: the entry plus its score and snippet."""
+    return {**entry_to_dict(brain, hit.entry), "score": round(hit.score, 4), "snippet": hit.snippet}
 
 
 def cmd_init(args: argparse.Namespace) -> int:
@@ -173,11 +180,7 @@ def cmd_search(args: argparse.Namespace) -> int:
     gate = {"min_score": DEFAULT_MIN_SCORE, "min_terms": DEFAULT_MIN_TERMS} if args.gate else {}
     hits = brain.search(query, type=args.type, limit=args.limit, **gate)
     if args.json:
-        results = [
-            {**entry_to_dict(brain, h.entry), "score": round(h.score, 4), "snippet": h.snippet}
-            for h in hits
-        ]
-        _emit_json({"query": query, "results": results})
+        emit_json({"query": query, "results": [hit_to_dict(brain, h) for h in hits]})
         return 0
     if not hits:
         print("no matches")
@@ -198,7 +201,7 @@ def cmd_show(args: argparse.Namespace) -> int:
         hint = f"; did you mean: {', '.join(close)}?" if close else ""
         raise CairnError(f"no entry with id '{args.id}'{hint}")
     if args.json:
-        _emit_json({"entry": entry_to_dict(brain, entry, body=True)})
+        emit_json({"entry": entry_to_dict(brain, entry, body=True)})
     else:
         print(entry.to_markdown(), end="")
     return 0
@@ -208,7 +211,7 @@ def cmd_list(args: argparse.Namespace) -> int:
     brain = _open(args)
     entries = brain.filter(type=args.type, status=args.status)
     if args.json:
-        _emit_json({"entries": [entry_to_dict(brain, e) for e in entries]})
+        emit_json({"entries": [entry_to_dict(brain, e) for e in entries]})
         return 0
     width = max((len(e.id) for e in entries), default=0)
     for e in entries:

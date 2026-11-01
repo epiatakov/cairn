@@ -97,6 +97,9 @@ def test_cli_text_and_json(capsys):
     assert top["path"] == "issues/ripgrep-glob-on-windows.md"
     assert set(top) >= {"type", "title", "status", "score", "snippet"}
 
+    code, out, _ = run(capsys, "recall", "rg glob fails", "--json", "--brain", BRAIN)
+    assert json.loads(out) == payload, "--json is an alias for --format json"
+
     code, out, _ = run(capsys, "recall", "thanks", "--format", "json", "--brain", BRAIN)
     assert json.loads(out)["skipped"] is True
     assert json.loads(out)["results"] == []

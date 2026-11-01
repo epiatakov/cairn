@@ -143,14 +143,16 @@ skills and notes used by every coding agent here. `{ctx.brain}/INDEX.md` lists t
 
 
 def upsert_block(text: str, body: str) -> str:
-    """Insert or replace the cairn block. Text outside the markers is kept byte for byte."""
-    block = f"{BLOCK_BEGIN}\n{body.rstrip()}\n{BLOCK_END}\n"
+    """Insert or replace the cairn block. Text outside the markers is kept byte for byte, and
+    the block follows the file's line endings (CRLF or LF)."""
+    nl = _newline(text)
+    block = f"{BLOCK_BEGIN}\n{body.rstrip()}\n{BLOCK_END}\n".replace("\n", nl)
     match = _find_block(text)
     if match:
         return text[: match.start()] + block + text[match.end() :]
     if not text.strip():
         return block
-    return text + ("" if text.endswith("\n") else "\n") + "\n" + block
+    return text + ("" if text.endswith("\n") else nl) + nl + block
 
 
 def remove_block(text: str) -> str:
@@ -158,10 +160,15 @@ def remove_block(text: str) -> str:
     match = _find_block(text)
     if not match:
         return text
+    nl = _newline(text)
     before, after = text[: match.start()], text[match.end() :]
-    if not after and before.endswith("\n\n"):
-        before = before[:-1]
+    if not after and before.endswith(nl + nl):
+        before = before[: -len(nl)]
     return before + after
+
+
+def _newline(text: str) -> str:
+    return "\r\n" if "\r\n" in text else "\n"
 
 
 def _find_block(text: str) -> re.Match[str] | None:
@@ -215,8 +222,10 @@ def with_frontmatter(
 
 
 def read(path: Path) -> str | None:
+    """The file's text with line endings as they are on disk (no CRLF translation)."""
     try:
-        return path.read_text(encoding="utf-8")
+        with path.open(encoding="utf-8", newline="") as fh:
+            return fh.read()
     except FileNotFoundError:
         return None
     except (OSError, UnicodeDecodeError) as exc:

@@ -51,6 +51,9 @@ def register(sub: argparse._SubParsersAction, common: argparse.ArgumentParser) -
         default="text",
         help="claude-hook reads Claude Code UserPromptSubmit JSON on stdin and never fails",
     )
+    p.add_argument(
+        "--json", action="store_const", const="json", dest="format", help="same as --format json"
+    )
     p.set_defaults(func=cmd_recall)
 
     tools = ", ".join(ADAPTERS)
@@ -83,9 +86,27 @@ def _project_args(p: argparse.ArgumentParser) -> None:
 
 
 def is_claude_hook(argv: Sequence[str] | None) -> bool:
-    """True when the command line asks for hook mode, which must never fail the prompt."""
+    """True when the command line asks for a Claude Code hook mode (``cairn recall`` or
+    ``cairn issue match``), which must never fail: exit code 2 would block the prompt."""
     argv = list(sys.argv[1:] if argv is None else argv)
-    return "recall" in argv and ("claude-hook" in argv or "--format=claude-hook" in argv)
+    return "claude-hook" in argv or "--format=claude-hook" in argv
+
+
+def read_hook_payload() -> object:
+    """The hook's JSON payload from stdin, decoded as UTF-8 whatever the console encoding."""
+    buffer = getattr(sys.stdin, "buffer", None)
+    raw = buffer.read().decode("utf-8", "replace") if buffer else sys.stdin.read()
+    return json.loads(raw)
+
+
+def hook_brain_root(brain: str | None, payload: object) -> Path:
+    """``--brain`` for a hook. A relative path is resolved against the payload's ``cwd``,
+    since hooks may run from a subfolder of the project."""
+    root = resolve_root(brain)
+    cwd = payload.get("cwd") if isinstance(payload, dict) else None
+    if not root.is_absolute() and isinstance(cwd, str) and cwd:
+        root = Path(cwd) / root
+    return root
 
 
 # -- recall ----------------------------------------------------------------------------------
@@ -106,14 +127,10 @@ def cmd_recall(args: argparse.Namespace) -> int:
     trivial = recall_mod.is_trivial(prompt, args.min_words)
     hits = [] if trivial else _recall(brain, prompt, args)
     if args.format == "json":
-        from .cli import JSON_SCHEMA_VERSION, entry_to_dict
+        from .cli import emit_json, hit_to_dict
 
-        results = [
-            {**entry_to_dict(brain, h.entry), "score": round(h.score, 4), "snippet": h.snippet}
-            for h in hits
-        ]
-        payload = {"query": prompt, "skipped": trivial, "results": results}
-        print(json.dumps({"version": JSON_SCHEMA_VERSION, **payload}, indent=2))
+        results = [hit_to_dict(brain, h) for h in hits]
+        emit_json({"query": prompt, "skipped": trivial, "results": results})
     elif hits:
         print(recall_mod.render_text(brain, hits), end="")
     else:
@@ -128,15 +145,11 @@ def _recall(brain: Brain, prompt: str, args: argparse.Namespace) -> list:
 
 
 def _claude_hook(args: argparse.Namespace) -> None:
-    payload = json.loads(sys.stdin.read())
+    payload = read_hook_payload()
     prompt = payload.get("prompt") if isinstance(payload, dict) else None
     if not isinstance(prompt, str) or recall_mod.is_trivial(prompt, args.min_words):
         return
-    root = resolve_root(args.brain)
-    cwd = payload.get("cwd")
-    if not root.is_absolute() and isinstance(cwd, str) and cwd:
-        root = Path(cwd) / root  # hooks may run from a subfolder; the payload knows the project
-    brain = Brain.open(root)
+    brain = Brain.open(hook_brain_root(args.brain, payload))
     hits = _recall(brain, prompt, args) if args.limit >= 1 else []
     if hits:
         context = recall_mod.render_text(brain, hits)
