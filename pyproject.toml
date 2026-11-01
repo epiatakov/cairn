@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cairn-brain"
 dynamic = ["version"]
-description = "One second brain for every coding agent: a plain-Markdown knowledge store with recall and capture."
+description = "One second brain for every coding agent: a plain-Markdown knowledge store with BM25 recall, tool adapters and a hot-issues board."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -16,9 +16,15 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
     "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development",
+    "Topic :: Text Processing :: Indexing",
 ]
 dependencies = []
 
@@ -30,7 +36,9 @@ cairn = "cairn.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/epiatakov/cairn"
+Repository = "https://github.com/epiatakov/cairn"
 Issues = "https://github.com/epiatakov/cairn/issues"
+Changelog = "https://github.com/epiatakov/cairn/blob/main/CHANGELOG.md"
 
 [tool.setuptools.dynamic]
 version = { attr = "cairn.__version__" }

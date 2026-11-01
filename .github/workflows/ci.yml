@@ -57,3 +57,19 @@ jobs:
           git diff --exit-code evals/results/retrieval.json
       - name: Agent harness self-test (mock runner)
         run: python -m evals.agent --runner mock
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install build
+      - run: python -m build
+      - name: Install the wheel in a clean venv and smoke-test it
+        run: |
+          python -m venv /tmp/wheel-venv
+          /tmp/wheel-venv/bin/pip install dist/*.whl
+          /tmp/wheel-venv/bin/cairn --version
+          /tmp/wheel-venv/bin/cairn search "windows glob" --brain examples/brain --limit 1

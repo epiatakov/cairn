@@ -2,8 +2,8 @@
 
 This document covers the core (data model, retrieval, deduplication and linting).
 It also covers the tool adapters and the recall hook. The hot-issues board has its own
-document, [hot-issues.md](hot-issues.md). Planned pieces (capture hook, eval harness) are
-described only where they shape today's decisions.
+document, [hot-issues.md](hot-issues.md), and so do the evals, [evals.md](evals.md). The
+planned capture hook is described only where it shapes today's decisions.
 
 ## Data model
 
@@ -107,8 +107,8 @@ missed duplicate, which lint and review can still catch.
 
 ## Machine interface
 
-`--json` output on `search`, `show`, `list` and the `issue` commands, and
-`recall --format json`, is a contract for hooks and adapters. Every payload carries
+`--json` output on `search`, `show`, `list`, `recall`, `issue record`, `issue match` and
+`issue list` is a contract for hooks and adapters (`--json` and `--format json` are the same). Every payload carries
 `"version": 1`. Fields may be added, but changing or removing one requires a
 version bump. Paths are relative to the brain and always use `/`.
 
@@ -153,9 +153,11 @@ It skips trivial prompts: fewer than two content words after stopwords, or only 
 ("thanks", "ok go ahead", "lgtm"). This follows the gate lesson below: injecting context into
 every turn trains people to ignore it.
 
-The Claude Code hook mode never fails closed. A `UserPromptSubmit` hook that exits with code 2
-blocks the prompt, so any error (missing brain, bad JSON, bad flags, a bug) produces no output
-and exit code 0. A relative `--brain` is resolved against the `cwd` in the hook payload.
+The Claude Code hook modes (`recall` and `issue match` with `--format claude-hook`) never fail
+closed. A `UserPromptSubmit` hook that exits with code 2 blocks the prompt, so any error
+(missing brain, bad JSON, bad flags, a bug) produces no output and exit code 0. A relative
+`--brain` is resolved against the `cwd` in the hook payload, and the payload is read as UTF-8
+whatever the console encoding.
 
 ## Lessons
 

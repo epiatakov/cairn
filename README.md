@@ -30,7 +30,19 @@ three things they don't combine:
    reports the difference, so "it helps" is a number, not a feeling. _(Retrieval eval built,
    with [results](#results); agent A/B harness ready, results pending.)_
 
+## Install
+
+cairn needs Python 3.10+ and has no runtime dependencies. It is not on PyPI yet; install the
+CLI straight from GitHub:
+
+```bash
+pip install "git+https://github.com/epiatakov/cairn"
+cairn --version
+```
+
 ## 60-second quickstart
+
+The quickstart uses the example brain in the repository, so start from a clone:
 
 ```bash
 git clone https://github.com/epiatakov/cairn && cd cairn
@@ -140,13 +152,14 @@ links: [powershell-strips-quotes-in-native-arguments]
 | `cairn list [--type T] [--status S] [--json]` | List entries |
 | `cairn lint [--strict]` | Report invalid frontmatter, duplicate ids, broken links (errors) and near-duplicates (warnings). Exits non-zero on errors |
 | `cairn index [--check]` | Regenerate `INDEX.md`, or check that it is current |
-| `cairn recall <prompt> [--limit N] [--min-score S] [--min-terms N] [--min-words N] [--format text\|json\|claude-hook]` | A few high-precision pointers for a task. Skips trivial prompts. `claude-hook` reads hook JSON on stdin and never fails |
+| `cairn recall <prompt> [--limit N] [--min-score S] [--min-terms N] [--min-words N] [--format text\|json\|claude-hook] [--json]` | A few high-precision pointers for a task. Skips trivial prompts. `claude-hook` reads hook JSON on stdin and never fails |
 | `cairn install <tool> [--project DIR] [--dry-run]` | Wire cairn into `claude`, `codex`, `copilot` or `cursor`. Idempotent |
 | `cairn uninstall <tool> [--project DIR] [--dry-run]` | Remove exactly what `install` added |
 | `cairn skills export\|clean --tool claude\|cursor [--project DIR] [--dry-run]` | Sync brain skills into the tool's folder, or remove the exported ones |
-| `cairn issue record --tool T --error TEXT\|-` | Record a tool failure: a new issue, or +1 on the known one |
-| `cairn issue match --error TEXT\|- [--json]` | The known issue and workaround for an error, if any |
-| `cairn issue list [--since 7d] [--state S] [--tool T]` | The hot-issues board, ranked by recent occurrences |
+| `cairn issue record --tool T --error TEXT\|- [--workaround W] [--json]` | Record a tool failure: a new issue, or +1 on the known one |
+| `cairn issue match --error TEXT\|- [--json]` | The known issue and workaround for an error, if any. Exits 1 when nothing matches |
+| `cairn issue match --format claude-hook` | Hook mode: reads a Claude Code `PostToolUse` payload on stdin; never fails |
+| `cairn issue list [--since 7d] [--state S] [--tool T] [--all] [--json]` | The hot-issues board, ranked by recent occurrences |
 | `cairn issue resolve <id> --workaround W \| --fix F` | Attach a workaround or a root-cause fix |
 | `cairn issue prune --older-than 30d` | Mark issues that stopped recurring as stale |
 
@@ -175,8 +188,9 @@ cairn issue list --brain examples/brain     # hottest first
 ```
 
 `cairn issue match --format claude-hook` plugs into a Claude Code `PostToolUse` hook and injects
-the workaround after a failed tool call; it stays silent otherwise. Lifecycle, fingerprinting and
-the hook contract are in [docs/hot-issues.md](docs/hot-issues.md).
+the workaround after a failed tool call; it stays silent otherwise. `cairn install claude` does
+not wire this hook yet, so add it to `.claude/settings.json` by hand (example in the docs).
+Lifecycle, fingerprinting and the hook contract are in [docs/hot-issues.md](docs/hot-issues.md).
 
 ## Design principles
 
@@ -236,7 +250,11 @@ pip install -e ".[dev]"
 pytest
 ruff check . && ruff format --check .
 python -m evals.retrieval          # retrieval eval; fails on a hit@3 regression
+python -m build                    # sdist and wheel (pip install build)
 ```
+
+Changes are listed in [CHANGELOG.md](CHANGELOG.md). To report a security problem, see
+[SECURITY.md](SECURITY.md).
 
 Contributor and agent conventions live in [AGENTS.md](AGENTS.md).
 

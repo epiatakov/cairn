@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from cairn import CairnError
+from cairn import Brain, CairnError
 from cairn.adapters.base import BLOCK_BEGIN, BLOCK_END, remove_block, upsert_block
 from cairn.cli import main
 
@@ -297,3 +297,29 @@ def test_skills_export_refuses_to_overwrite_user_skill(capsys, project):
     )  # fmt: skip
     assert code == 1
     assert user_skill.read_text(encoding="utf-8") == "mine\n"
+
+
+def test_crlf_files_keep_their_line_endings(project):
+    from cairn.adapters.base import apply, block_install, block_uninstall
+
+    path = project / "AGENTS.md"
+    original = b"# House rules\r\n\r\nUse tabs.\r\n"
+    path.write_bytes(original)
+    apply([block_install(path, "hello\nworld")], project)
+    data = path.read_bytes()
+    assert data.startswith(original)
+    assert b"\n" not in data.replace(b"\r\n", b"")
+    apply([block_uninstall(path)], project)
+    assert path.read_bytes() == original
+
+
+def test_hook_command_quotes_a_brain_path_with_spaces(capsys, project, tmp_path):
+    import shlex
+
+    brain = tmp_path / "my brain's folder"
+    Brain.init(brain)
+    cairn(capsys, project, "install", "claude", brain=brain)
+    (group,) = settings(project)["hooks"]["UserPromptSubmit"]
+    argv = shlex.split(group["hooks"][0]["command"])
+    assert argv[:4] == ["cairn", "recall", "--format", "claude-hook"]
+    assert argv[4:] == ["--brain", brain.as_posix()]

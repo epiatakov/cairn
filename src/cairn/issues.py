@@ -19,7 +19,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from .brain import Brain, CairnError
-from .model import Entry, normalize_tags
+from .model import Entry, normalize_tags, slugify
 from .search import Index, tokenize
 
 STATES = ("open", "workaround", "fixed")
@@ -358,7 +358,11 @@ def record(
         first = redact(error_lines(text)[0])
         prefixed = re.match(rf"{re.escape(tools[0])}\b", first, re.I)
         title = _clip(first if prefixed else f"{tools[0]}: {first}", 100)
-        entry = brain.new_entry("issue", title, _symptom(tools[0], text), tags=tools, today=today)
+        # A title with no ASCII letters or digits has no slug; fall back to the fingerprint.
+        entry_id = None if slugify(title) else brain.unique_id(f"issue {fp}")
+        entry = brain.new_entry(
+            "issue", title, _symptom(tools[0], text), tags=tools, entry_id=entry_id, today=today
+        )
         _set(entry, "tool", tools[0])
         _set(entry, "fingerprint", [fp])
         _set(entry, "state", "workaround" if workaround_text else "open")

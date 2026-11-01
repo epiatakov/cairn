@@ -8,6 +8,7 @@ import sys
 from datetime import date
 
 from . import issues
+from .agents_cli import hook_brain_root, read_hook_payload
 from .brain import Brain, CairnError, resolve_root
 from .model import Entry
 
@@ -32,7 +33,9 @@ def register(sub: argparse._SubParsersAction, common: argparse.ArgumentParser) -
     p = isub.add_parser("match", parents=[common], help="find the known issue for an error")
     p.add_argument("--error", help="error text; '-' reads stdin (not used with claude-hook)")
     p.add_argument("--format", choices=("text", "json", "claude-hook"), default="text")
-    p.add_argument("--json", action="store_const", const="json", dest="format")
+    p.add_argument(
+        "--json", action="store_const", const="json", dest="format", help="same as --format json"
+    )
     p.set_defaults(func=cmd_match)
 
     p = isub.add_parser("list", parents=[common], help="the board, hottest first")
@@ -75,9 +78,9 @@ def _read_error(value: str | None) -> str:
 
 
 def _emit(payload: dict) -> None:
-    from .cli import JSON_SCHEMA_VERSION
+    from .cli import emit_json
 
-    print(json.dumps({"version": JSON_SCHEMA_VERSION, **payload}, indent=2))
+    emit_json(payload)
 
 
 def issue_to_dict(brain: Brain, entry: Entry, today: date | None = None) -> dict:
@@ -160,11 +163,11 @@ def cmd_match(args: argparse.Namespace) -> int:
 def _match_hook(args: argparse.Namespace) -> int:
     """Claude Code hook mode. Never fails the tool call: silent with exit 0 on anything odd."""
     try:
-        payload = json.loads(sys.stdin.read())
+        payload = read_hook_payload()
         text = hook_error_text(payload)
         if not text:
             return 0
-        brain = Brain.open(resolve_root(args.brain))
+        brain = Brain.open(hook_brain_root(args.brain, payload))
         found = issues.match(brain, text)
         if found is None:
             return 0

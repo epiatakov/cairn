@@ -1,0 +1,4 @@
+# The sdist ships the package, README, license and changelog. Tests need the example and eval
+# brains from the repository, so they are run from a checkout, not from the sdist.
+include CHANGELOG.md
+prune tests

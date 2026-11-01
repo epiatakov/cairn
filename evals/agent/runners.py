@@ -143,6 +143,3 @@ def parse_output(stdout: str, returncode: int = 0, stderr: str = "") -> RunResul
         cost_usd=data.get("total_cost_usd"),
         error=error,
     )
-
-
-RUNNERS = {"mock": MockRunner, "claude": ClaudeRunner}

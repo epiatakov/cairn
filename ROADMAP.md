@@ -9,7 +9,7 @@ Each milestone is a small series of PRs. Items move to **Done** only when merged
 - [x] Importable API (`Brain`, `Entry`, `search`) for adapters
 - [x] Example brain, tests, CI on Python 3.10 and 3.12
 
-## Next: tool adapters
+## Tool adapters
 
 One brain, rendered into each tool's native format. Generated files are never edited by hand.
 
@@ -38,8 +38,10 @@ One brain, rendered into each tool's native format. Generated files are never ed
 - [x] `cairn issue match --format claude-hook`: inject the matching workaround after a failed
   tool call (silent on no match or any error)
 - [x] `cairn issue prune`: mark issues `stale` when they stop recurring
+- [ ] `cairn install claude` wires the `issue match` `PostToolUse` hook too (today it is added
+  by hand, see `docs/hot-issues.md`)
 - [ ] Record occurrences from the hook itself, so agents don't have to call `record`
-- [ ] Hook output for other agents (Codex, Copilot, Cursor) once their adapters land
+- [ ] Hook output for other agents (Codex, Copilot, Cursor) once those tools offer post-tool hooks
 
 ## Eval harness
 
